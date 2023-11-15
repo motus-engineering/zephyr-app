@@ -1,32 +1,3 @@
-# Design Log for Tersa Earth : Field Trial Fuel Cell - MFC Cascade PCB Firmware
-
-The Issues in this repository are intended to serve as the Design Log / Notebook for the project.
-- Open Github issues capture the scope of design intent.
-- Comments on Github Issues maintain a record of the design conversation that occurs as the Issue moves from Intent through Investigation, Implementation and Validation before being Released as Content.
-- Completed Github issues capture the scope of design content.
-
-_NOTE: Logistics (Time management) conversations should *NOT* be in Github comments, but should be in the Mavenlink Activity feed of the Task linked to the Issue.
-
-The Issues will also serve to bridge between the Motus [Design Specification](https://docs.google.com/document/d/18Qxqf7OG2-gpJk1O_4ziVJWdTjbd8Apsrcyv1l5y_c8) and Mavenlink project.
-- Github Issues will be organized into Github Projects which correspond to Design Spec Sections and Milestones which correspond to Mavenlink Milestones
-- Github Issues may be linked to Design Spec Sections or Sub-sections as needed.
-- Github Issues may be linked to other documentation as needed.
-
-DEVELOPMENT is the process of turning design INTENT into design CONTENT.
-
-## Design Intent 
-Open Design Issues in GitHub capture the design scope and/or provide a link to the appropriate section in the [Design Specification](https://docs.google.com/document/d/18Qxqf7OG2-gpJk1O_4ziVJWdTjbd8Apsrcyv1l5y_c8).
-- Identified Bugs and Feature requests
-- Technical Investigations
-- Architecture Design and Definition
-
-## Content 
-The results of work on the Design Issues that have been marked Released in GitHub.
-- Defined Functionality
-- Completed Architecture Definition 
-- Completed Code, CAD, Calculations, Documentation, Test Results
-- Work Product (builds, post processed controlled revision files)
-
 ## Firmware Development Environment Setup
 
 The firmware development environment is based on a devcontainer model.

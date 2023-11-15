@@ -1,0 +1,64 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+{
+	"name": "Zephyr Application devcontainer",
+
+	"build": {
+		"dockerfile": "Dockerfile",
+		"args": { "ZEPHYR_CONTAINER_VERSION": "v0.26.5"}
+	},
+
+	// must run in privileged mode in order to access usb debugger devices
+	"runArgs": ["--privileged"],
+
+	"mounts": [
+		// Allows for USB devices to be recognized when attached after the devcontainer is running
+		{"type": "bind", "source": "/dev/bus/usb", "target": "/dev/bus/usb"},
+		// Allows USB STLink debuggers to be accessed properly
+        {"type": "bind", "source": "/etc/udev/rules.d", "target": "/etc/udev/rules.d"},
+		// General Share folder
+		{"type": "bind", "source": "${localEnv:HOME}/share", "target": "/mnt/share"}
+	],
+
+	// Environment variables used by the build system
+	// "containerEnv": {},
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": {
+		"west_init": "if ! [ -d .west ]; then west init -l app; fi" // run west init if not done already
+	},
+
+	// Configure tool-specific properties.
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			// Set *default* container specific settings.json values on container create.
+			"settings": {
+				"cortex-debug.armToolchainPrefix": "arm-zephyr-eabi",
+				"cortex-debug.armToolchainPath": "/opt/toolchains/zephyr-sdk-0.16.3/arm-zephyr-eabi/bin/",
+				"files.associations": {
+					"*.h": "c",
+					"*.c": "c"
+				},
+				"C_Cpp.clang_format_style": "file:${containerWorkspaceFolder}/.vscode/.clang-format",
+				"C_Cpp.clang_format_path": "/usr/local/bin/clang-format", // use the system version supplied with container
+				"cmake.configureOnOpen": false
+		},
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
+				"ms-vscode.cpptools-extension-pack",
+				"marus25.cortex-debug",
+				"github.vscode-github-actions",
+				"GitHub.vscode-pull-request-github",
+				"cschlosser.doxdocgen"]
+		}
+	}
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}

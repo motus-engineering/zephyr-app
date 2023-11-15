@@ -1,0 +1,121 @@
+# CI Workflow definition
+name: Continuous Integration Pipeline
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the
+  # specified branches
+  push:
+    branches: ['main', 'develop']
+  pull_request:
+    branches: ['main', 'develop']
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      build:
+        description: 'Build Type'
+        required: true
+        default: 'debug'
+        type: choice
+        options:
+        - debug
+        - release
+
+  # Nightly build
+  schedule:
+    - cron: '0 1 * * *'
+
+# Workflow
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    env:
+      ZEPHYR_SDK_INSTALL_DIR: /opt/toolchains/zephyr-sdk-0.16.3
+    permissions:
+      checks: write
+      contents: write
+      packages: read
+      pull-requests: write
+    container:
+      image: ghcr.io/zephyrproject-rtos/ci:v0.26.5
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.github_token }}
+    steps:
+      # FIXME: The owner UID of the GITHUB_WORKSPACE directory may not
+      #        match the container user UID because of the way GitHub
+      #        Actions runner is implemented. Remove this workaround when
+      #        GitHub comes up with a fundamental fix for this problem.
+      - name: Apply container owner mismatch workaround
+        run: |
+          git config --global --add safe.directory ${GITHUB_WORKSPACE}
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Format Check
+        run: find app -iname *.h -o -iname *.c | xargs clang-format -n --Werror --style=file:.vscode/.clang-format
+
+      - name: Configure and Build
+        id: build
+        run: |
+          printenv
+          west init -l app
+          west update
+          west build -d debug -b nucleo_l476rg app
+          echo "debug_elf=debug/zephyr/zephyr.elf" >> $GITHUB_OUTPUT
+          echo "debug_hex=debug/zephyr/zephyr.hex" >> $GITHUB_OUTPUT
+          west build -d /release -b nucleo_l476rg app -- -DCONFIG_DEBUG=n -DCONFIG_LOG=n -DCONFIG_SHELL=n
+          echo "release_elf=release/zephyr/zephyr.elf" >> $GITHUB_OUTPUT
+          echo "release_hex=release/zephyr/zephyr.hex" >> $GITHUB_OUTPUT
+          echo "release_notes=release_notes.txt" >> $GITHUB_OUTPUT
+
+      - name: Unit test
+        id: unittest
+        run: |
+          pwd
+          printenv
+          west unit
+          echo "coverage_path=build/twister/coverage/coverage.xml" >> $GITHUB_OUTPUT
+
+      - name: Publish Code Coverage Report
+        if: github.event_name == 'pull_request'
+        uses: 5monkeys/cobertura-action@master
+        with:
+          path: ${{steps.unittest.outputs.coverage_path}}
+          minimum_coverage: 75
+          fail_below_threshold: false # not enabling this for now, prefer code coverage to be a health indicator rather than a target
+          show_line: true
+          show_branch: true
+          show_missing: true
+          link_missing_lines: true
+
+      - name: Version
+        id: version
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          pip install semver
+          if [ ${{ inputs.build }} = release ]; then { echo "app_version="; west app-version app -r; } | tr -d "\n" >> $GITHUB_OUTPUT; else { echo "app_version="; west app-version app; } | tr -d "\n" >> $GITHUB_OUTPUT; fi
+
+      - name: Publish Nightly
+        if: github.event_name == 'schedule'
+        uses: actions/upload-artifact@v3
+        with:
+          name: nightly-build-${{ steps.version.outputs.app_version }}
+          path: |
+            ${{ steps.build.outputs.debug_elf }}
+            ${{ steps.build.outputs.debug_hex }}
+            ${{ steps.build.outputs.release_elf }}
+            ${{ steps.build.outputs.release_hex }}
+
+      - name: Publish Release
+        if: github.event_name == 'workflow_dispatch'
+        uses: softprops/action-gh-release@v1
+        with:
+          fail_on_unmatched_files: true
+          tag_name: ${{ steps.version.outputs.app_version }}
+          files: |
+            ${{ steps.build.outputs.release_elf }}
+            ${{ steps.build.outputs.release_hex }}
+          body_path: ${{ steps.build.outputs.release_notes }}

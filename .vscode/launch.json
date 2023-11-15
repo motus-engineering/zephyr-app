@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "name": "Debug with STLink",
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceFolder}/build/zephyr/zephyr.elf",
+            "request": "launch",
+            "type": "cortex-debug",
+            "runToEntryPoint": "main",
+            "showDevDebugOutput": "raw",
+            "servertype": "stlink",
+            "stlinkPath": "/opt/st/stm32cubeclt/STLink-gdb-server/bin/ST-LINK_gdbserver",
+            "stm32cubeprogrammer": "/opt/st/stm32cubeclt/STM32CubeProgrammer/bin",
+            "svdFile": "/opt/st/stm32cubeclt/STMicroelectronics_CMSIS_SVD/STM32L476.svd"
+        }
+    ]
+}

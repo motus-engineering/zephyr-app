@@ -63,10 +63,10 @@ jobs:
           west init -l ${GITHUB_WORKSPACE}
           cd ${GITHUB_WORKSPACE}
           west update
-          west build -d ${RUNNER_WORKSPACE}/debug -b cascade_pcba
+          west build -d ${RUNNER_WORKSPACE}/debug -b nucleo_l476rg
           echo "debug_elf=${RUNNER_WORKSPACE}/debug/zephyr/zephyr.elf" >> $GITHUB_OUTPUT
           echo "debug_hex=${RUNNER_WORKSPACE}/debug/zephyr/zephyr.hex" >> $GITHUB_OUTPUT
-          west build -d ${RUNNER_WORKSPACE}/release -b cascade_pcba -- -DCONFIG_DEBUG=n -DCONFIG_LOG=n -DCONFIG_SHELL=n
+          west build -d ${RUNNER_WORKSPACE}/release -b nucleo_l476rg -- -DCONFIG_DEBUG=n -DCONFIG_LOG=n -DCONFIG_SHELL=n
           echo "release_elf=${RUNNER_WORKSPACE}/release/zephyr/zephyr.elf" >> $GITHUB_OUTPUT
           echo "release_hex=${RUNNER_WORKSPACE}/release/zephyr/zephyr.hex" >> $GITHUB_OUTPUT
           echo "release_notes=${GITHUB_WORKSPACE}/release_notes.txt" >> $GITHUB_OUTPUT

@@ -52,21 +52,22 @@ The code repository should be cloned into your WSL file system to ensure best po
 * open your WSL Linux terminal using the Windows Teminal program
 * `mkdir repos`  in your home directory
 * `cd repos`
-*  `git clone https://github.com/mdg-00271/mfc-cascade-pcb-fw.git`
-* `cd mfc-cascade-pcb-fw`
+*  `git clone https://github.com/motus-engineering/zephyr-app.git`
+* `cd zephyr-app`
 * If not already open, open the Docker Desktop GUI in Windows and leave it running.
 * `code . ` to start VSCode in this directory
 * Click the `Reopen in Container` button on the notification that appears or use the `Dev Containers: Reopen in Container` command from the Command Palette `(F1, Ctrl+Shift+P)`
 * VSCode will restart and build the devcontainer. Once complete, your development environment is setup and ready to use.
+
 ## Configuring and Building the Firmware
 This section needs to be updated as the application is developed.
 
-The following steps are to compile the mfc cascade pcba firmware application within the docker container specified in the devcontainer.json file.
+The following steps are to compile the zephyr-app firmware application within the docker container specified in the devcontainer.json file.
 
 In a VSCode container bash terminal, run the following:
-* `cd /workdir`
 * `west update`
-* `west build -p always -b cascade_pcba mfc-cascade-pcb-fw`
+* `west build -d build/ -b nucleo_l476rg zephyr-app`
+
 ## Debugging
 In order to debug using a USB debugger the previously installed USBIPD package will be used. This package creates a bridge from the Windows host to the WSL environment.
 * Connect the debugger to the target hardware
@@ -75,13 +76,16 @@ In order to debug using a USB debugger the previously installed USBIPD package w
     * When attaching the debugger for the first time, open (but do not use) a Linux terminal with Windows admin privileges by Ctrl-clicking the Ubuntu new terminal menu option and authenticating with the Windows' admin prompt
 * Start your debug session in [VSCode](https://code.visualstudio.com/docs/editor/debugging)
     * When debugging for the first time, select "Debug with STLink" within the drop-down menu at the top of the Run and Debug sidebar.
+
 ## Compile and run unit tests locally (posix build)
 In a VSCode container bash terminal, run the following:
-* `cd /workdir/mfc-cascade-pcb-fw`
+* `cd /workdir/zephyr-app`
 * `./run_tests.sh`
+
 ## Code formatting
 ###Automatic code formatting tool
 In VSCode, the automatic code formatting tool can be applied at any time to the in-focus C source code file by pressing `Shift + Alt + F`.
+
 ### `.c and .h file templates`
 Templates are implemented as VS Code snippets. To populate a template in a .c or .h file:
 * Press `Ctrl+Space`
@@ -90,6 +94,7 @@ Templates are implemented as VS Code snippets. To populate a template in a .c or
     * `filec` for the .c file template, or
     * `testc` for the .c unit test file template
 * Press enter
+
 ## Continuous Integration (CI) Pipeline
 *The following to be implemented*
 
@@ -105,11 +110,8 @@ The workflow will do the following:
 
 The CI build may fail at any one of the above steps. The CI Pipeline must be passing in order to merge code to `develop` or `main`.
 
-## Firmware Release Process
-Follows the process described in the Motus [SOP - Git Firmware Management](https://docs.google.com/document/d/1T6_ogBWhr2-Q9jRyn47n8mObT7cwgjO1i3QbFDEQ63c) document.
-
 ### Release Checklist
 Before merging to master
 * Ensure the VERSION file in the root directory has been updated
 * Update `release_notes.txt` with the summaries of the features and bug fixes added since the last release. This information will get included in the release description on Github.
-* From the Continuous Integration Pipeline [Github Action](https://github.com/mdg-00271/mfc-cascade-pcb-fw/actions/workflows/ci.yml), use the `Run Workflow` dropdown to select the build type and run the release workflow. A tagged [release](https://github.com/mdg-00271/mfc-cascade-pcb-fw/releases) will be created in Github with the associated firmware application files. A release build will follow the `major.minor.patch` format (e.g. 1.2.3). Other options will follow the `major.minor.patch-git_hash+build_type` format (e.g. 1.2.3-abcd1234+debug).
+* From the Continuous Integration Pipeline [Github Action](https://github.com/motus-engineering/zephyr-app/actions/workflows/ci.yml), use the `Run Workflow` dropdown to select the build type and run the release workflow. A tagged [release](https://github.com/motus-engineering/zephyr-app/releases) will be created in Github with the associated firmware application files. A release build will follow the `major.minor.patch` format (e.g. 1.2.3). Other options will follow the `major.minor.patch-git_hash+build_type` format (e.g. 1.2.3-abcd1234+debug).

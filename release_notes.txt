@@ -1,0 +1,6 @@
+Application Release Notes
+
+e.g.
+v0.0.0 to v0.0.1
+#XXX    - Basic description of feature or bug fix introduced in git issue #XXX
+#YYY    - Basic description of feature or bug fix introduced in git issue #YYY

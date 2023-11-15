@@ -1,0 +1,5 @@
+tests:
+  # section.subsection
+  app.supervisor:
+    platform_allow: native_posix
+    tags: unit

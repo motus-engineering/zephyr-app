@@ -1,0 +1,11 @@
+west-commands:
+  - file: scripts/west_commands/app_version.py
+    commands:
+      - name: app-version
+        class: AppVersion
+        help: outputs the app version based on the VERSION file and current git hash
+  - file: scripts/west_commands/st-clt.py
+    commands:
+      - name: st-clt
+        class: STCLT
+        help: installs the ST CLT

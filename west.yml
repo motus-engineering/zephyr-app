@@ -1,0 +1,22 @@
+# Copyright (c) 2023 Motus Performance
+
+manifest:
+  remotes:
+    - name: zephyr-app
+      url-base: https://github.com/motus-engineering/zephyr-app
+    - name: zephyrproject-rtos
+      url-base: https://github.com/zephyrproject-rtos
+
+  projects:
+    - name: zephyr
+      remote: zephyrproject-rtos
+      revision: v3.5.0
+      west-commands: scripts/west-commands.yml
+      import:
+        name-allowlist:
+          - cmsis
+          - hal_stm32
+      clone-depth: 1
+
+  self:
+    west-commands: scripts/west-commands.yml

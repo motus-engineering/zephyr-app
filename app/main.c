@@ -15,10 +15,6 @@ int main(void)
     // Log firmware version
     LOG_INF("MFC Cascade PCBA Firmware %s", APP_VERSION_STRING);
 
-    // The supervisor oversees the application
-    supervisor_init();
-    supervisor_start();
-
     // Let main complete, Zephyr will handle task switching from here
     return 0;
 }

@@ -9,6 +9,8 @@ target_sources(app
         main.c
 )
 
+add_subdirectory(actor)
+add_subdirectory(event)
 add_subdirectory(supervisor)
 
 # Debug build options

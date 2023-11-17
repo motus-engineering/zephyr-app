@@ -1,16 +1,18 @@
 /** @file supervisor.c
-*
-* @brief module description
-*
-* (c) 2023 Motus Design Group.  All rights reserved.
-*/
+ *
+ * @brief module description
+ *
+ * (c) 2023 Motus Design Group.  All rights reserved.
+ */
 
 // SECTION: include statements
-#include <stdint.h>
-#include <stdbool.h>
-
 #include "supervisor.h"
 
+#include "actor.h"
+#include "event.h"
+
+#include <stdbool.h>
+#include <stdint.h>
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 
@@ -22,41 +24,54 @@ LOG_MODULE_REGISTER(supervisor);
 // SECTION: private data types
 
 // SECTION: private constants
+#define M_MAX_NUM_MESSAGES 10
 
 // SECTION: private macro definitions
 
-// SECTION: static data declarations
-
 // SECTION: private function prototypes
+static void m_init(void);
+static void m_run(void);
+static void m_post(app_event_t *p_evt_msg);
 static void m_supervisor_main_thread(void *, void *, void *);
-K_THREAD_DEFINE(state_machine_thread,
-                M_SUPERVISOR_STACK_SIZE,
-                m_supervisor_main_thread,
-                NULL,
-                NULL,
-                NULL,
-                M_SUPERVISOR_PRIORITY,
-                K_ESSENTIAL,
-                K_TICKS_FOREVER);
 
+// SECTION: static data declarations
+ACTOR_DEFINE(m_supervisor, m_init, m_run, m_post, app_event_t,
+             M_MAX_NUM_MESSAGES);
+
+K_THREAD_DEFINE(supervisor, M_SUPERVISOR_STACK_SIZE, m_supervisor_main_thread,
+                NULL, NULL, NULL, M_SUPERVISOR_PRIORITY, K_ESSENTIAL, 0);
 
 // SECTION: public function bodies
-void supervisor_init(void)
-{
 
-}
-
-void supervisor_start(void)
-{
-    // Start threads
-    k_thread_start(state_machine_thread);
-}
 // SECTION: private function bodies
+void m_init(void)
+{
+}
+
+void m_run(void)
+{
+}
+
+static void m_post(app_event_t *p_evt_msg)
+{
+    int result = k_msgq_put(&m_supervisor_queue, p_evt_msg, K_NO_WAIT);
+    // TODO: handle result
+}
 
 static void m_supervisor_main_thread(void *, void *, void *)
 {
-    while(true)
+    while (true)
     {
-        k_msleep(1000);
+        app_event_t evt_msg = {0};
+        int result = k_msgq_get(&m_supervisor_queue, &evt_msg, K_FOREVER);
+        // TODO: handle result
+
+        switch (evt_msg.event_name)
+        {
+            case 0:
+                break;
+            default:
+                break;
+        }
     }
 }

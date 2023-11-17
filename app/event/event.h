@@ -1,12 +1,12 @@
-/** @file supervisor.h
+/** @file event.h
 * 
 * @brief module description
 *
 * (c) 2023 Motus Design Group.  All rights reserved.
 */ 
 
-#ifndef APP_SUPERVISOR_H
-#define APP_SUPERVISOR_H
+#ifndef EVENT_H
+#define EVENT_H
 
 #ifdef __cplusplus
 extern "C"
@@ -18,6 +18,10 @@ extern "C"
 #include <stdbool.h>
 
 // SECTION: public data types
+typedef struct
+{
+    uint32_t event_name;
+} app_event_t;
 
 // SECTION: public constants
 
@@ -29,4 +33,4 @@ extern "C"
 } // extern "C"
 #endif // __cplusplus
 
-#endif // APP_SUPERVISOR_H
+#endif // EVENT_H

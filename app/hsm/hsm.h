@@ -1,0 +1,45 @@
+/** @file hsm.h
+ *
+ * @brief module description
+ *
+ * (c) 2023 Motus Design Group.  All rights reserved.
+ */
+
+#ifndef HSM_H
+#define HSM_H
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif //  __cplusplus
+
+// SECTION: include statements
+#include <stdbool.h>
+#include <stdint.h>
+
+// SECTION: public data types
+#define HSM_DECLARE_STATE_MACHINE(_name, _state_enum_type)                     \
+    typedef struct                                                             \
+    {                                                                          \
+        struct smf_ctx ctx;                                                    \
+        app_event_t    evt_msg;                                                \
+        void (*set_state)(_state_enum_type next_state);                        \
+    } _name##_t
+
+#define HSM_DECLARE_STATE_FUNCTIONS(_name)                                     \
+    void _name##_state_entry(void *evt);                                       \
+    void _name##_state_run(void *evt);                                         \
+    void _name##_state_exit(void *evt);
+
+// SECTION: public constants
+
+// SECTION: public macro definitions
+#define HSM_DEFINE_STATE_MACHINE(_name) static _name##_t _name
+
+// SECTION: public function prototypes
+
+#ifdef __cplusplus
+} // extern "C"
+#endif // __cplusplus
+
+#endif // HSM_H

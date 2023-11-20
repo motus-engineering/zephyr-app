@@ -11,7 +11,11 @@ target_sources(app
 
 add_subdirectory(actor)
 add_subdirectory(event)
+add_subdirectory(hsm)
 add_subdirectory(supervisor)
+
+add_subdirectory(led)
+add_subdirectory(button)
 
 # Debug build options
 if (CONFIG_SHELL) 

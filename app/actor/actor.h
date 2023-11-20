@@ -25,18 +25,18 @@ typedef struct
     uint32_t handle;
     void (*fp_init)(void);
     void (*fp_run)(void);
-    void (*fp_post)(app_event_t *);
+    app_event_send_t fp_send;
 } actor_t;
 
 // SECTION: public constants
 
 // SECTION: public macro definitions
-#define ACTOR_DEFINE(_name, _fp_init, _fp_run, _fp_post, _type, _max_msgs)     \
+#define ACTOR_DEFINE(_name, _fp_init, _fp_run, _fp_send, _type, _max_msgs)     \
     actor_t _name##_actor = {                                                  \
         .handle = 0,                                                           \
         .fp_init = _fp_init,                                                   \
         .fp_run = _fp_run,                                                     \
-        .fp_post = _fp_post,                                                   \
+        .fp_send = _fp_send,                                                   \
     };                                                                         \
     K_MSGQ_DEFINE(_name##_queue, sizeof(_type), _max_msgs, 1)
 

@@ -8,7 +8,7 @@
 	".c file tempate": {
 		"scope": "c",
 		"isFileTemplate": true,
-		"prefix": "filec",
+		"prefix": "filec-motus",
 		"body": [
 			"$BLOCK_COMMENT_START* @file $TM_FILENAME",
 			"*",
@@ -36,13 +36,14 @@
 			"$LINE_COMMENT SECTION: public function bodies",
 			"",
 			"$LINE_COMMENT SECTION: private function bodies",
+			""
 		],
 		"description": ".c file template"
 	},
 	".h file tempate": {
 		"scope": "c",
 		"isFileTemplate": true,
-		"prefix": "fileh",
+		"prefix": "fileh-motus",
 		"body": [
 			"$BLOCK_COMMENT_START* @file $TM_FILENAME",
 			"* ",
@@ -76,13 +77,14 @@
 			"#endif $LINE_COMMENT __cplusplus",
 			"",
 			"#endif $LINE_COMMENT ${TM_FILENAME_BASE/(.*)/${1:/upcase}/}_H",
+			""
 		],
 		"description": ".h file template"
 	},
 	".c unit test file tempate": {
 		"scope": "c",
 		"isFileTemplate": true,
-		"prefix": "testc",
+		"prefix": "testc-motus",
 		"body": [
 			"$BLOCK_COMMENT_START* @file $TM_FILENAME",
 			"*",
@@ -101,11 +103,11 @@
 			"",
 			"$LINE_COMMENT SECTION: mocks",
 			"",
-			"$LINE_COMMENT SECTION: clean up of tests",
+			"$LINE_COMMENT SECTION: test suite",
 			"",
 			"$LINE_COMMENT SECTION: tests",
 			"",
 		],
-		"description": ".c file template"
+		"description": ".c unit test file template"
 	},
 }

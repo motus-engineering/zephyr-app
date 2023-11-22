@@ -1,12 +1,12 @@
-/** @file supervisor.h
+/** @file button.h
 * 
 * @brief module description
 *
 * (c) 2023 Motus Design Group.  All rights reserved.
 */ 
 
-#ifndef APP_SUPERVISOR_H
-#define APP_SUPERVISOR_H
+#ifndef BUTTON_H
+#define BUTTON_H
 
 #ifdef __cplusplus
 extern "C"
@@ -24,9 +24,18 @@ extern "C"
 // SECTION: public macro definitions
 
 // SECTION: public function prototypes
+/**
+ * @brief  Initialzation of the button.
+ * 
+ * Must be called prior to using the button.
+ * 
+ * @return true 
+ * @return false 
+ */
+bool app_button_init(void);
 
 #ifdef __cplusplus
 } // extern "C"
 #endif // __cplusplus
 
-#endif // APP_SUPERVISOR_H
+#endif // BUTTON_H

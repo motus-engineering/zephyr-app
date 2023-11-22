@@ -63,7 +63,8 @@
 				"ms-vscode.cpptools-extension-pack",
 				"marus25.cortex-debug",
 				"github.vscode-github-actions",
-				"GitHub.vscode-pull-request-github"]
+				"GitHub.vscode-pull-request-github",
+				"cschlosser.doxdocgen"]
 		}
 	}
 

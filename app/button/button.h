@@ -24,6 +24,14 @@ extern "C"
 // SECTION: public macro definitions
 
 // SECTION: public function prototypes
+/**
+ * @brief  Initialzation of the button.
+ * 
+ * Must be called prior to using the button.
+ * 
+ * @return true 
+ * @return false 
+ */
 bool app_button_init(void);
 
 #ifdef __cplusplus

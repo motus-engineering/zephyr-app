@@ -24,7 +24,22 @@ extern "C"
 // SECTION: public macro definitions
 
 // SECTION: public function prototypes
+/**
+ * @brief Initialization of the LED.
+ * 
+ * Must be called prior to other methods in this module.
+ * 
+ * @return true 
+ * @return false 
+ */
 bool app_led_init(void);
+
+/**
+ * @brief Toggles the state of the LED.
+ * 
+ * @return true 
+ * @return false 
+ */
 bool app_led_toggle(void);
 
 #ifdef __cplusplus

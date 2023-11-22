@@ -20,6 +20,11 @@ extern "C"
 #include <stdint.h>
 
 // SECTION: public data types
+
+/**
+ * @brief Structure for an Actor object
+ *
+ */
 typedef struct
 {
     uint32_t handle;
@@ -31,14 +36,24 @@ typedef struct
 // SECTION: public constants
 
 // SECTION: public macro definitions
-#define ACTOR_DEFINE(_name, _fp_init, _fp_run, _fp_send, _type, _max_msgs)     \
+/**
+ * @brief Macro to statically define an Actor.
+ * 
+ * @param _name name of the Actor
+ * @param _fp_init function pointer to initialize the Actor
+ * @param _fp_run funtion pointer to process a new event
+ * @param _fp_send funtion pointer to send an event to the Actor queue
+ * @param _max_msgs queue depth of the Actor
+ * 
+ */
+#define ACTOR_DEFINE(_name, _fp_init, _fp_run, _fp_send, _max_msgs)     \
     actor_t _name##_actor = {                                                  \
         .handle = 0,                                                           \
         .fp_init = _fp_init,                                                   \
         .fp_run = _fp_run,                                                     \
         .fp_send = _fp_send,                                                   \
     };                                                                         \
-    K_MSGQ_DEFINE(_name##_queue, sizeof(_type), _max_msgs, 1)
+    K_MSGQ_DEFINE(_name##_queue, sizeof(app_event_t), _max_msgs, 1)
 
 // SECTION: public function prototypes
 

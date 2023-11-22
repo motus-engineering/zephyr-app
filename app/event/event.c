@@ -15,11 +15,15 @@
 #define M_MAX_NUM_REGISTERED_SENDERS (5)
 
 // SECTION: private data types
+/**
+ * @brief structure for registering subscribers to an event
+ *
+ */
 typedef struct
 {
     app_event_send_t fp_senders[M_MAX_NUM_REGISTERED_SENDERS];
-    uint32_t         num_sensders;
-} m_senders_t;
+    uint32_t         num_subscribers;
+} m_subscribers_t;
 
 // SECTION: private constants
 
@@ -28,25 +32,30 @@ typedef struct
 // SECTION: static data declarations
 
 // SECTION: private function prototypes
-static m_senders_t m_senders[APP_EVENT_NUM] = {0};
+/**
+ * @brief Map of events to subscribers.
+ *
+ */
+static m_subscribers_t m_subscribers[APP_EVENT_NUM] = {0};
 
 // SECTION: public function bodies
-
-// TODO use sections for compile time registration
-void app_event_register(app_event_events_t event, app_event_send_t send)
+void app_event_subscribe(app_event_events_t event, app_event_send_t send)
 {
-    __ASSERT(m_senders[event].num_sensders < M_MAX_NUM_REGISTERED_SENDERS,
+    __ASSERT(m_subscribers[event].num_subscribers <
+                 M_MAX_NUM_REGISTERED_SENDERS,
              "Max number of registered events exceeded.");
-    m_senders[event].fp_senders[m_senders[event].num_sensders] = send;
-    m_senders[event].num_sensders++;
+    m_subscribers[event].fp_senders[m_subscribers[event].num_subscribers] =
+        send;
+    m_subscribers[event].num_subscribers++;
 }
 
 void app_event_publish(app_event_t *p_event)
 {
     for (uint32_t sender_idx = 0;
-         sender_idx < m_senders[p_event->event_name].num_sensders; sender_idx++)
+         sender_idx < m_subscribers[p_event->event_name].num_subscribers;
+         sender_idx++)
     {
-        m_senders[p_event->event_name].fp_senders[sender_idx](p_event);
+        m_subscribers[p_event->event_name].fp_senders[sender_idx](p_event);
     }
 }
 

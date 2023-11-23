@@ -57,30 +57,24 @@ jobs:
       - name: Configure and Build
         id: build
         run: |
-          export ZEPHYR_BASE=${RUNNER_WORKSPACE}/zephyr
           printenv
-          cd ${RUNNER_WORKSPACE}
-          west init -l ${GITHUB_WORKSPACE}
-          cd ${GITHUB_WORKSPACE}
+          west init -l app
           west update
-          west build -d ${RUNNER_WORKSPACE}/debug -b nucleo_l476rg
-          echo "debug_elf=${RUNNER_WORKSPACE}/debug/zephyr/zephyr.elf" >> $GITHUB_OUTPUT
-          echo "debug_hex=${RUNNER_WORKSPACE}/debug/zephyr/zephyr.hex" >> $GITHUB_OUTPUT
-          west build -d ${RUNNER_WORKSPACE}/release -b nucleo_l476rg -- -DCONFIG_DEBUG=n -DCONFIG_LOG=n -DCONFIG_SHELL=n
-          echo "release_elf=${RUNNER_WORKSPACE}/release/zephyr/zephyr.elf" >> $GITHUB_OUTPUT
-          echo "release_hex=${RUNNER_WORKSPACE}/release/zephyr/zephyr.hex" >> $GITHUB_OUTPUT
-          echo "release_notes=${GITHUB_WORKSPACE}/release_notes.txt" >> $GITHUB_OUTPUT
+          west build -d debug -b nucleo_l476rg
+          echo "debug_elf=debug/zephyr/zephyr.elf" >> $GITHUB_OUTPUT
+          echo "debug_hex=debug/zephyr/zephyr.hex" >> $GITHUB_OUTPUT
+          west build -d /release -b nucleo_l476rg -- -DCONFIG_DEBUG=n -DCONFIG_LOG=n -DCONFIG_SHELL=n
+          echo "release_elf=release/zephyr/zephyr.elf" >> $GITHUB_OUTPUT
+          echo "release_hex=release/zephyr/zephyr.hex" >> $GITHUB_OUTPUT
+          echo "release_notes=release_notes.txt" >> $GITHUB_OUTPUT
 
       - name: Unit test
         id: unittest
         run: |
           pwd
-          export WORKDIR=${RUNNER_WORKSPACE}
-          export ZEPHYR_BASE=${WORKDIR}/zephyr
           printenv
-          ./run_tests.sh
-          ls -la ${WORKDIR}/build/twister/coverage
-          echo "coverage_path=${RUNNER_WORKSPACE}/build/twister/coverage/coverage.xml" >> $GITHUB_OUTPUT
+          west unit
+          echo "coverage_path=build/twister/coverage/coverage.xml" >> $GITHUB_OUTPUT
 
       - name: Publish Code Coverage Report
         if: github.event_name == 'pull_request'
@@ -99,7 +93,7 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         run: |
           pip install semver
-          if [ ${{ inputs.build }} = release ]; then { echo "app_version="; west app-version ${GITHUB_WORKSPACE} -r; } | tr -d "\n" >> $GITHUB_OUTPUT; else { echo "app_version="; west app-version ${GITHUB_WORKSPACE}; } | tr -d "\n" >> $GITHUB_OUTPUT; fi
+          if [ ${{ inputs.build }} = release ]; then { echo "app_version="; west app-version app -r; } | tr -d "\n" >> $GITHUB_OUTPUT; else { echo "app_version="; west app-version app; } | tr -d "\n" >> $GITHUB_OUTPUT; fi
 
       - name: Publish Nightly
         if: github.event_name == 'schedule'

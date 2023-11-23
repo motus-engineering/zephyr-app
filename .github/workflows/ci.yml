@@ -60,7 +60,7 @@ jobs:
           printenv
           west init -l app
           west update
-          west build -d debug -b nucleo_l476rg
+          west build -d debug -b nucleo_l476rg app
           echo "debug_elf=debug/zephyr/zephyr.elf" >> $GITHUB_OUTPUT
           echo "debug_hex=debug/zephyr/zephyr.hex" >> $GITHUB_OUTPUT
           west build -d /release -b nucleo_l476rg -- -DCONFIG_DEBUG=n -DCONFIG_LOG=n -DCONFIG_SHELL=n

@@ -76,8 +76,7 @@ In order to debug using a USB debugger the previously installed USBIPD package w
 
 ## Compile and run unit tests locally (posix build)
 In a VSCode container bash terminal, run the following:
-* `cd /workdir`
-* `./run_tests.sh`
+* `west unit`
 
 ## Code formatting
 ### Automatic code formatting tool

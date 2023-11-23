@@ -70,7 +70,12 @@ _build.h
 info.txt
 
 # Zephyr
+.west/
+bootloader/
 build/
+modules/
+tools/
+zephyr/
 
 # Twister
 twister-out*/

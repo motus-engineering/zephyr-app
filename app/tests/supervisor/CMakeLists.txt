@@ -18,6 +18,10 @@ string(REPLACE "tests/" "" module_dir_path ${PROJECT_SOURCE_DIR})
 add_subdirectory(${module_dir_path} "/workdir/build/tests")
 
 # Add any dependent application include directories
-# target_include_directories(app PUBLIC 
-#     ${module_dir_path}/../mbif
-# )
+target_include_directories(app PUBLIC 
+    ${module_dir_path}/../hsm
+    ${module_dir_path}/../event
+    ${module_dir_path}/../actor
+    ${module_dir_path}/../led
+    ${module_dir_path}/../button
+)

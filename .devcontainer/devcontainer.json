@@ -20,13 +20,11 @@
 	],
 
 	// Environment variables used by the build system
-	"containerEnv": { 
-		"ZEPHYR_BASE": "/workdir/zephyr",
-		"WORKDIR": "/workdir" },
+	// "containerEnv": {},
 
 	// use the workdir directory for the workspace as it is defined in the Zephyr Dockerfile recepies
 	"workspaceFolder": "/workdir",
-	"workspaceMount": "source=${localWorkspaceFolder},target=/workdir/${localWorkspaceFolderBasename},type=bind",
+	"workspaceMount": "source=${localWorkspaceFolder},target=/workdir,type=bind",
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
@@ -39,8 +37,8 @@
 	},
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": {
-		"symlink": "ln -s ${localWorkspaceFolderBasename}/.vscode ./.vscode",
-		"west_init": "west init -l ${localWorkspaceFolderBasename}/"
+		"west_init": "west init -l app",
+		"west_update": "west update"
 	},
 
 	// Configure tool-specific properties.

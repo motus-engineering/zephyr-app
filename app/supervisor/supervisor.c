@@ -81,6 +81,7 @@ static void m_send(app_event_t *p_evt_msg)
 {
     int result = k_msgq_put(&m_supervisor_queue, p_evt_msg, K_NO_WAIT);
     // TODO: handle result
+    result = result;
 }
 
 /**
@@ -112,8 +113,10 @@ static void m_supervisor_main_thread(void *, void *, void *)
     {
         int result = k_msgq_get(&m_supervisor_queue,
                                 &m_supervisor_state.evt_msg, K_FOREVER);
+        result = result;
         // TODO: handle result
         int32_t ret = smf_run_state(SMF_CTX(&m_supervisor_state));
+        ret = ret;
         // TODO: handle ret
     }
 }

@@ -37,8 +37,7 @@
 	},
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": {
-		"west_init": "west init -l app",
-		"west_update": "west update"
+		"west_init": "if ! [ -d .west ]; then west init -l app; fi" // run west init if not done already
 	},
 
 	// Configure tool-specific properties.

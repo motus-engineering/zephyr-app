@@ -9,3 +9,8 @@ west-commands:
       - name: st-clt
         class: STCLT
         help: installs the ST CLT
+  - file: scripts/west_commands/unit.py
+    commands:
+      - name: unit
+        class: Unit
+        help: runs the app unit tests

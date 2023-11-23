@@ -14,6 +14,9 @@
 
 // SECTION: includes for application code under test
 #include "supervisor.h"
+#include "event.h"
+#include "led.h"
+#include "button.h"
 
 // SECTION: private test data
 
@@ -25,6 +28,13 @@ struct my_suite_fixture {
      size_t size;
      uint8_t buff[1];
 };
+
+
+FAKE_VOID_FUNC(app_event_subscribe , app_event_events_t, app_event_send_t);
+FAKE_VALUE_FUNC(bool, app_led_init);
+FAKE_VALUE_FUNC(bool, app_led_toggle);
+FAKE_VALUE_FUNC(bool, app_button_init);
+
 
 void* setup(void)
 {
@@ -51,6 +61,8 @@ void teardown(void *p_fixture)
 {
     free(p_fixture);
 }
+
+
 
 ZTEST_SUITE(supervisor_unit_tests, NULL, setup, before, after, teardown);
 

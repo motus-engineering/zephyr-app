@@ -1,9 +1,9 @@
 /** @file led.h
-* 
-* @brief module description
-*
-* (c) 2023 Motus Design Group.  All rights reserved.
-*/ 
+ *
+ * @brief module description
+ *
+ * (c) 2023 Motus Design Group.  All rights reserved.
+ */
 
 #ifndef LED_H
 #define LED_H
@@ -14,8 +14,8 @@ extern "C"
 #endif //  __cplusplus
 
 // SECTION: include statements
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 // SECTION: public data types
 
@@ -26,19 +26,19 @@ extern "C"
 // SECTION: public function prototypes
 /**
  * @brief Initialization of the LED.
- * 
+ *
  * Must be called prior to other methods in this module.
- * 
- * @return true 
- * @return false 
+ *
+ * @return true
+ * @return false
  */
 bool app_led_init(void);
 
 /**
  * @brief Toggles the state of the LED.
- * 
- * @return true 
- * @return false 
+ *
+ * @return true
+ * @return false
  */
 bool app_led_toggle(void);
 

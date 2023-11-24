@@ -1,9 +1,9 @@
 /** @file supervisor.h
-* 
-* @brief module description
-*
-* (c) 2023 Motus Design Group.  All rights reserved.
-*/ 
+ *
+ * @brief module description
+ *
+ * (c) 2023 Motus Design Group.  All rights reserved.
+ */
 
 #ifndef APP_SUPERVISOR_H
 #define APP_SUPERVISOR_H
@@ -14,8 +14,8 @@ extern "C"
 #endif //  __cplusplus
 
 // SECTION: include statements
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 // SECTION: public data types
 

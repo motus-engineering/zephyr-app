@@ -1,4 +1,3 @@
-// TODO start other actors
 /** @file button.c
  *
  * @brief module description
@@ -76,7 +75,7 @@ bool app_button_init(void)
 // SECTION: private function bodies
 /**
  * @brief Callback that publishes the @ref APP_EVENT_BUTTON_PRESSED event.
- * 
+ *
  * @param dev unused
  * @param cb unused
  * @param pins unused

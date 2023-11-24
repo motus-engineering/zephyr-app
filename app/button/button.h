@@ -1,9 +1,9 @@
 /** @file button.h
-* 
-* @brief module description
-*
-* (c) 2023 Motus Design Group.  All rights reserved.
-*/ 
+ *
+ * @brief module description
+ *
+ * (c) 2023 Motus Design Group.  All rights reserved.
+ */
 
 #ifndef BUTTON_H
 #define BUTTON_H
@@ -14,8 +14,8 @@ extern "C"
 #endif //  __cplusplus
 
 // SECTION: include statements
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 // SECTION: public data types
 
@@ -26,11 +26,11 @@ extern "C"
 // SECTION: public function prototypes
 /**
  * @brief  Initialzation of the button.
- * 
+ *
  * Must be called prior to using the button.
- * 
- * @return true 
- * @return false 
+ *
+ * @return true
+ * @return false
  */
 bool app_button_init(void);
 

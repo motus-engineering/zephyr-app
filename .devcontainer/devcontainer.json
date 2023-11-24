@@ -53,6 +53,7 @@
 					"*.c": "c"
 				},
 				"C_Cpp.clang_format_style": "file:/workdir/.vscode/.clang-format",
+				"C_Cpp.clang_format_path": "/usr/local/bin/clang-format", // use the system version supplied with container
 				"cmake.configureOnOpen": false
 		},
 			// Add the IDs of extensions you want installed when the container is created.

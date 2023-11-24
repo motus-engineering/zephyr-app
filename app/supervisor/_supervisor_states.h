@@ -14,12 +14,11 @@ extern "C"
 #endif //  __cplusplus
 
 // SECTION: include statements
+#include "event.h"
+#include "hsm.h"
+
 #include <stdbool.h>
 #include <stdint.h>
-
-#include "hsm.h"
-#include "event.h"
-
 #include <zephyr/smf.h>
 
 // SECTION: public data types

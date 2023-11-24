@@ -1,17 +1,17 @@
 /** @file init_state.c
-*
-* @brief module description
-*
-* (c) 2023 Motus Design Group.  All rights reserved.
-*/
+ *
+ * @brief module description
+ *
+ * (c) 2023 Motus Design Group.  All rights reserved.
+ */
 
 // SECTION: include statements
-#include <stdint.h>
-#include <stdbool.h>
-
-#include "led.h"
-#include "button.h"
 #include "_supervisor_states.h"
+#include "button.h"
+#include "led.h"
+
+#include <stdbool.h>
+#include <stdint.h>
 
 // SECTION: private data types
 
@@ -34,12 +34,11 @@ void supervisor_init_state_entry(void *evt)
     app_led_init();
     app_button_init();
 
-    ((m_supervisor_state_t*)evt)->set_state(SUPERVISE);
+    ((m_supervisor_state_t *)evt)->set_state(SUPERVISE);
 }
 
 void supervisor_init_state_exit(void *evt)
 {
-
 }
 
 // SECTION: private function bodies

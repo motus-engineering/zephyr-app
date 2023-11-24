@@ -9,6 +9,7 @@
 #define ACTOR_H
 
 #ifdef __cplusplus
+
 extern "C"
 {
 #endif //  __cplusplus
@@ -27,9 +28,9 @@ extern "C"
  */
 typedef struct
 {
-    uint32_t handle;
-    void (*fp_init)(void);
-    void (*fp_run)(void);
+    uint32_t         handle;
+    void             (*fp_init)(void);
+    void             (*fp_run)(void);
     app_event_send_t fp_send;
 } actor_t;
 
@@ -38,15 +39,15 @@ typedef struct
 // SECTION: public macro definitions
 /**
  * @brief Macro to statically define an Actor.
- * 
+ *
  * @param _name name of the Actor
  * @param _fp_init function pointer to initialize the Actor
  * @param _fp_run funtion pointer to process a new event
  * @param _fp_send funtion pointer to send an event to the Actor queue
  * @param _max_msgs queue depth of the Actor
- * 
+ *
  */
-#define ACTOR_DEFINE(_name, _fp_init, _fp_run, _fp_send, _max_msgs)     \
+#define ACTOR_DEFINE(_name, _fp_init, _fp_run, _fp_send, _max_msgs)            \
     actor_t _name##_actor = {                                                  \
         .handle = 0,                                                           \
         .fp_init = _fp_init,                                                   \

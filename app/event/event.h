@@ -21,9 +21,9 @@ extern "C"
 // SECTION: public data types
 /**
  * @brief List of possible event for the whole application
- * 
+ *
  * @note This enum contains all possible events and thus is global in nature.
- * 
+ *
  */
 typedef enum
 {
@@ -33,7 +33,7 @@ typedef enum
 
 /**
  * @brief Event object structure used when publishing and event.
- * 
+ *
  */
 typedef struct
 {
@@ -42,7 +42,7 @@ typedef struct
 
 /**
  * @brief Signature for publishing an event.
- * 
+ *
  */
 typedef void (*app_event_send_t)(app_event_t *); // Must be re-entrant function
 
@@ -52,8 +52,8 @@ typedef void (*app_event_send_t)(app_event_t *); // Must be re-entrant function
 
 // SECTION: public function prototypes
 /**
- * @brief 
- * 
+ * @brief
+ *
  * @param event the event to subscribe to
  * @param send  the function to call when dispatching the event
  */
@@ -61,7 +61,7 @@ void app_event_subscribe(app_event_events_t event, app_event_send_t send);
 
 /**
  * @brief Called to publish and event to subscribers.
- * 
+ *
  * @param p_event pointer to an event object
  */
 void app_event_publish(app_event_t *p_event);

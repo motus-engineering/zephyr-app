@@ -40,6 +40,6 @@ class Unit(WestCommand):
         # This gets called when the user runs the command, e.g.:
         #
         #   $ west unit
-        subprocess.run(['west', 'twister', '-cv', '--coverage', '--gcov-tool', 'gcovr', '--coverage-tool', 'gcovr', '--coverage-formats', 'txt', '-T', 'app/tests/', '-O', 'build/twister'], check=True)
-        subprocess.run(['gcovr', '-f', 'app', '--txt', 'build/twister/coverage/coverage.txt', '--xml', 'build/twister/coverage/coverage.xml', '/workdir'], check=True)
+        subprocess.run(['west', 'twister', '-cnv', '--coverage', '--gcov-tool', 'gcovr', '--coverage-tool', 'gcovr', '--coverage-formats', 'txt', '-T', 'app/tests/', '-O', 'build/twister'], check=True)
+        subprocess.run(['gcovr', '-f', 'app', '-e', 'app/tests', '--txt', 'build/twister/coverage/coverage.txt', '--xml', 'build/twister/coverage/coverage.xml', '.'], check=True)
         subprocess.run(['cat', 'build/twister/coverage/coverage.txt'], check=True)

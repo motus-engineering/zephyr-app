@@ -11,7 +11,7 @@
 	"runArgs": ["--privileged"],
 
 	"mounts": [
-		// Allows for USB devices to recognized when attached after the devcontainer is running
+		// Allows for USB devices to be recognized when attached after the devcontainer is running
 		{"type": "bind", "source": "/dev/bus/usb", "target": "/dev/bus/usb"},
 		// Allows USB STLink debuggers to be accessed properly
         {"type": "bind", "source": "/etc/udev/rules.d", "target": "/etc/udev/rules.d"},
@@ -22,19 +22,12 @@
 	// Environment variables used by the build system
 	// "containerEnv": {},
 
-	// use the workdir directory for the workspace as it is defined in the Zephyr Dockerfile recepies
-	"workspaceFolder": "/workdir",
-	"workspaceMount": "source=${localWorkspaceFolder},target=/workdir,type=bind",
-
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 
-	"onCreateCommand": {
-		"chown": "sudo chown user:user /workdir/"
-	},
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": {
 		"west_init": "if ! [ -d .west ]; then west init -l app; fi" // run west init if not done already

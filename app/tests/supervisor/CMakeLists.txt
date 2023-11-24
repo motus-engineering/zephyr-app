@@ -15,7 +15,7 @@ target_compile_options(app PUBLIC --coverage -fprofile-abs-path)
 target_link_options(app PUBLIC --coverage)
 
 string(REPLACE "tests/" "" module_dir_path ${PROJECT_SOURCE_DIR})
-add_subdirectory(${module_dir_path} "/workdir/build/tests")
+add_subdirectory(${module_dir_path} "build/tests")
 
 # Add any dependent application include directories
 target_include_directories(app PUBLIC 

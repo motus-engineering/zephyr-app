@@ -64,7 +64,7 @@ From the above, West remembers the most recent application directory and board (
 In order to debug using a USB debugger the previously installed USBIPD package will be used. This package creates a bridge from the Windows host to the WSL environment.
 For debugging with STLink, install the [STM32CubeCLT](https://www.st.com/en/development-tools/stm32cubeclt.html) in your container: 
     * Select the "STM32CubeCLT Debian Linux Installer" package to download
-    * In Windows Explorer, copy the downloaded zip file into the .devcontainer/.env/ directory
+    * In Windows Explorer, copy the downloaded zip file into a .env/ directory
     * Run `west st-clt` with the path to the zip file to extract and install the CLT. This only needs to be done once for a new container.
 
 With the CLT installed,

@@ -37,7 +37,7 @@ The Following installation and setup instructions are for Windows 11 Pro:
     * In Windows Explorer, copy the downloaded file to the following WSL Linux folder `\\wsl.localhost\Ubuntu-22.04\home\<username>\share`
     * Unzip the file
     * Run the extracted file, e.g. `sudo ./st-stm32cubeclt_1.12.1_16088_20230420_1057_amd64.deb_bundle.sh`
-    * Leave the zip file in the folder as it will be used by the devcontainer as well
+    * **Leave the zip file in the folder as it will be used by the devcontainer as well**
 7. Install [Docker Desktop](https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-containers)
     * Confirm that WSL2 is enabled as part of the installation process.
 8. Install VSCode and extensions:
@@ -70,7 +70,7 @@ In order to debug using a USB debugger the previously installed USBIPD package w
 * Ensure the device has power
 * "Attach" the debugger to WSL by following these [instructions](https://learn.microsoft.com/en-us/windows/wsl/connect-usb#attach-a-usb-device)
     * When attaching the debugger for the first time, the terminal must have admin privileges. You can Ctrl-click PowerShell in the new terminal menu option to do this
-* Run `west st-cli` to install the required tools for debugging over ST Link. This uses the STM32CubeCLT zip file that was previously used when setting up your WSL. This only needs to be done once for a new container.
+* Run `west st-clt` to install the required tools for debugging over ST Link. This uses the STM32CubeCLT zip file that was previously used when setting up your WSL. This only needs to be done once for a new container.
 * Start your debug session in [VSCode](https://code.visualstudio.com/docs/editor/debugging)
     * When debugging for the first time, select "Debug with STLink" within the drop-down menu at the top of the Run and Debug sidebar.
 

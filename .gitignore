@@ -88,3 +88,6 @@ docs-build
 !.vscode/.clang-format
 !.vscode/launch.json
 !.vscode/snippets.code-snippets
+
+# Local Dev Environment
+.devcontainer/.env/*

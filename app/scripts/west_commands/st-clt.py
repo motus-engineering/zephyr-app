@@ -62,10 +62,11 @@ class STCLT(WestCommand):
                            check=True)
 
             # remove any previous installations of the CLT
-            for file in listdir(path.expanduser('/opt/st/')):
-                if fnmatch(file, 'stm32cubeclt*'):
-                    log.inf(f'Found previous clt installation: {file}. Removing it...')
-                    subprocess.run(['sudo', 'rm', '-r', path.join(path.expanduser('/opt/st/'), file)], check=True)   
+            if path.exists('/opt/st/'):
+                for file in listdir(path.expanduser('/opt/st/')):
+                    if fnmatch(file, 'stm32cubeclt*'):
+                        log.inf(f'Found previous clt installation: {file}. Removing it...')
+                        subprocess.run(['sudo', 'rm', '-r', path.join(path.expanduser('/opt/st/'), file)], check=True)   
 
             # install the STLINK GDB server, programming and other ST utilities
             for file in listdir(path.expanduser('~/st/')):

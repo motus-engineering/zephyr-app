@@ -32,9 +32,15 @@ The Following installation and setup instructions are for Windows 11 Pro:
             -  `sudo update-alternatives --config x-www-browser`
     * References: [Git Installation](https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-git), [Git Config](https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-git#git-config-file-setup),[Git Credentail Manager (GCM)](https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-git#git-credential-manager-setup)
 5. Install [USBIPD-WIN](https://learn.microsoft.com/en-us/windows/wsl/connect-usb) in both the WSL Linux environment as well as Windows.
-6. Install [Docker Desktop](https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-containers)
+6. Install the [STM32CubeCLT](https://www.st.com/en/development-tools/stm32cubeclt.html) in your WSL environment: 
+    * Select the "STM32CubeCLT Debian Linux Installer" package to download
+    * In Windows Explorer, copy the downloaded file to the following WSL Linux folder `\\wsl.localhost\Ubuntu-22.04\home\<username>\share`
+    * Unzip the file
+    * Run the extracted file, e.g. `sudo ./st-stm32cubeclt_1.12.1_16088_20230420_1057_amd64.deb_bundle.sh`
+    * Leave the zip file in the folder as it will be used by the devcontainer as well
+7. Install [Docker Desktop](https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-containers)
     * Confirm that WSL2 is enabled as part of the installation process.
-7. Install VSCode and extensions:
+8. Install VSCode and extensions:
     * [VSCode Installation](https://code.visualstudio.com/download)
     * [VSCode - WSL extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl)
     * [VSCode - Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
@@ -63,12 +69,7 @@ From the above, West remembers the most recent application directory and board (
 ## Debugging
 In order to debug using a USB debugger the previously installed USBIPD package will be used. This package creates a bridge from the Windows host to the WSL environment.
 
-For debugging with STLink, install the [STM32CubeCLT](https://www.st.com/en/development-tools/stm32cubeclt.html) in your container: 
-* Select the "STM32CubeCLT Debian Linux Installer" package to download
-* In Windows Explorer, copy the downloaded zip file into a .env/ directory
-* Run `west st-clt` with the path to the zip file to extract and install the CLT. This only needs to be done once for a new container.
-
-With the CLT installed,
+Run `west st-clt` to install the required tools for debugging over ST Link. This uses the STM32CubeCLT zip file that was previously used when setting up your WSL. This only needs to be done once for a new container. With the CLT installed,
 * Connect the debugger to the target hardware
 * Ensure the device has power
 * "Attach" the debugger to WSL by following these [instructions](https://learn.microsoft.com/en-us/windows/wsl/connect-usb#attach-a-usb-device)

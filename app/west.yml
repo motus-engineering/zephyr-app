@@ -16,6 +16,7 @@ manifest:
         name-allowlist:
           - cmsis
           - hal_stm32
+          - segger
       clone-depth: 1
 
   self:

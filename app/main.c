@@ -13,7 +13,7 @@ LOG_MODULE_REGISTER(main, LOG_LEVEL_INF);
 int main(void)
 {
     // Log firmware version
-    LOG_INF("MFC Cascade PCBA Firmware %s", APP_VERSION_STRING);
+    LOG_INF("Motus Zephyr App Firmware %s", APP_VERSION_STRING);
 
     // Let main complete, Zephyr will handle task switching from here
     return 0;

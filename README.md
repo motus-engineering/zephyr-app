@@ -69,7 +69,12 @@ From the above, West remembers the most recent application directory and board (
 ## Debugging
 In order to debug using a USB debugger the previously installed USBIPD package will be used. This package creates a bridge from the Windows host to the WSL environment.
 
-Run `west st-clt` to install the required tools for debugging over ST Link. This uses the STM32CubeCLT zip file that was previously used when setting up your WSL. This only needs to be done once for a new container. With the CLT installed,
+Install the required tools for debugging over ST Link. This uses the STM32CubeCLT zip file that was previously used when setting up your WSL. This only needs to be done once for a new container:
+* From the Ubuntu WSL terminal window (outside VSCode), copy the downloaded zip to the root of the project directory, e.g. `cd ~/share/st-stm32cubeclt_1.12.1_16088_20230420_1057_amd64.deb_bundle.sh.zip ~/repos/zephyr-app/clt.zip`
+* In the VS Code container terminal, change directory to project root (`cd /workspaces/zephyr-app`)
+* Run `west st-clt clt.zip`
+
+Once the CLT is installed,
 * Connect the debugger to the target hardware
 * Ensure the device has power
 * "Attach" the debugger to WSL by following these [instructions](https://learn.microsoft.com/en-us/windows/wsl/connect-usb#attach-a-usb-device)

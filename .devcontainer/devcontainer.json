@@ -45,7 +45,7 @@
 					"*.h": "c",
 					"*.c": "c"
 				},
-				"C_Cpp.clang_format_style": "file:/workdir/.vscode/.clang-format",
+				"C_Cpp.clang_format_style": "file:/workspaces/zephyr-app/.vscode/.clang-format",
 				"C_Cpp.clang_format_path": "/usr/local/bin/clang-format", // use the system version supplied with container
 				"cmake.configureOnOpen": false
 		},

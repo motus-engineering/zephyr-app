@@ -13,7 +13,7 @@ The Following installation and setup instructions are for Windows 11 Pro:
     * Open PowerShell from Windows Terminal from step 1
     * Run `wsl --install Ubuntu`
     * Folow prompts including setting up initial Linux user account. It should place you directly into a bash shell when done.
-4. In Linux terminal, install github cli tool and setup git:
+4. In Linux terminal, install github cli tool and setup git. This will allow you to use these credentials in your containers as well.
     * `sudo apt update`
     * `sudo apt install gh`
     * `git config --global user.name "Your Name"` ,   replace "Your Name" with your preferred username 
@@ -51,14 +51,14 @@ From the above, West remembers the most recent application directory and board (
 ## Debugging
 In order to debug using a USB debugger the USBIPD package will be used. This package creates a bridge from the Windows host to the WSL environment.
 
-1. Install [USBIPD-WIN](https://learn.microsoft.com/en-us/windows/wsl/connect-usb) in both the WSL Linux environment as well as Windows.
+1. Install [USBIPD-WIN](https://learn.microsoft.com/en-us/windows/wsl/connect-usb) in both the Windows and WSL Linux environment
 1. Install ST Link tools in WSL instance. This will ensure the proper udev rules are applied for ST USB debuggers.
     * `sudo apt install stlink-tools`
 1. Install the required tools in the devcontainer for debugging over ST Link:
     * This part is done manually as ST does not provide tools without accepting their user agreement
     * Download the [STM32CubeCLT](https://www.st.com/en/development-tools/stm32cubeclt.html)
         * Select the "STM32CubeCLT Debian Linux Installer" package to download
-    * Place the downloaded file in the following WSL Linux folder, This location is shared with the devcontainer:
+    * Place the downloaded file in the following WSL Linux folder (this location is shared with the devcontainer):
         * `\\wsl.localhost\Ubuntu\home\<username>\share`
     * Run `west st-clt /mnt/share/<SMT32CubeCLT filename>` in the devcontainer
         * This only needs to be done once for a new devcontainer
@@ -73,6 +73,8 @@ In order to debug using a USB debugger the USBIPD package will be used. This pac
 ## Compile and run unit tests locally (posix build)
 In a VSCode container bash terminal, run the following:
 * `west unit`
+
+This runs a script that calls the Zephyr test tool, `twister`, to run all app unit tests including code coverage results.
 
 ## Code formatting
 ### Automatic code formatting tool

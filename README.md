@@ -4,25 +4,20 @@ The firmware development environment is based on a devcontainer model.
 
 Follow the instructions below to get your development environment up and running.
 
-## Required Software Installation and Configuration
-The Following installation and setup instructions are for Windows 11 Pro:
+Note: The installation and setup instructions are a for Windows 11 Pro host machine.
+
+## Required Software Installation
 
 1. Install [Windows Terminal](https://learn.microsoft.com/en-us/windows/wsl/setup/environment#set-up-windows-terminal)
-2. Install [WSL](https://learn.microsoft.com/en-us/windows/wsl/setup/environment)
-3. Install WSL Linux image Ubuntu:
+1. Install [WSL](https://learn.microsoft.com/en-us/windows/wsl/setup/environment)
+1. Install WSL Linux image Ubuntu:
     * Open PowerShell from Windows Terminal from step 1
     * Run `wsl --install Ubuntu`
     * Folow prompts including setting up initial Linux user account. It should place you directly into a bash shell when done.
-4. In Linux terminal, install github cli tool and setup git. This will allow you to use these credentials in your containers as well.
-    * `sudo apt update`
-    * `sudo apt install gh`
-    * `git config --global user.name "Your Name"` ,   replace "Your Name" with your preferred username 
-    * `git config --global user.email "youremail@domain.com"` , replace "youremail@&#65279;domain.com" with the email you prefer 
-    * `gh auth login`, follow the prompts to login:
-    * References: [Git Installation](https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-git), [Git Config](https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-git#git-config-file-setup),[Git Credentail Manager (GCM)](https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-git#git-credential-manager-setup)
-7. Install [Docker Desktop](https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-containers)
+    * Note: you may need to run `wsl --set-default Unbuntu` if this install is not your default.
+1. Install [Docker Desktop](https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-containers)
     * Confirm that WSL2 is enabled as part of the installation process.
-8. Install VSCode and extensions:
+1. Install VSCode and extensions:
     * [VSCode Installation](https://code.visualstudio.com/download)
     * [VSCode - WSL extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl)
     * [VSCode - Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
@@ -30,8 +25,15 @@ The Following installation and setup instructions are for Windows 11 Pro:
 
 ## Repository
 The code repository should be cloned into your WSL file system to ensure best possible performance ([see note](https://learn.microsoft.com/en-us/windows/wsl/filesystems#file-storage-and-performance-across-file-systems))
-* open your WSL Linux terminal using the Windows Teminal program
-* navigate to your desired project location
+* Open a terimal to your WSL Ubuntu Distribution using the Windows Teminal program
+* Navigate to your desired project location
+* Install github cli tool and setup git. This will allow you to use these credentials in your containers as well.
+    * `sudo apt update`
+    * `sudo apt install gh`
+    * `git config --global user.name "Your Name"` ,   replace "Your Name" with your preferred username 
+    * `git config --global user.email "youremail@domain.com"` , replace "youremail@domain.com" with the email you prefer 
+    * `gh auth login`, follow the prompts to login:
+    * References: [Git Installation](https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-git), [Git Config](https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-git#git-config-file-setup),[Git Credentail Manager (GCM)](https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-git#git-credential-manager-setup)
 * `git clone https://github.com/motus-engineering/zephyr-app.git`
 * `cd zephyr-app`
 * `code . ` to start VSCode in this directory
@@ -40,13 +42,13 @@ The code repository should be cloned into your WSL file system to ensure best po
 * VSCode will restart and build the devcontainer. Once complete, your development environment is setup and ready to use.
 
 ## Configuring and Building the Firmware
-The following steps are to compile the zephyr-app firmware application within the docker container specified in the devcontainer.json file.
+The following steps are to compile the `zephyr-app` firmware application within the docker container specified in the devcontainer.json file.
 
 In a VSCode container bash terminal, run the following from the root of the repo:
 * `west update`
 * `west build -d build -b nucleo_l476rg app`
 
-From the above, West remembers the most recent application directory and board (-b) selection. For incremental builds on the same application/board, use `west build` 
+Note: west remembers the most recent application directory and board (-b) selection. For incremental builds on the same application/board, use `west build` 
 
 ## Debugging
 In order to debug using a USB debugger the USBIPD package will be used. This package creates a bridge from the Windows host to the WSL environment.
@@ -58,8 +60,9 @@ In order to debug using a USB debugger the USBIPD package will be used. This pac
     * This part is done manually as ST does not provide tools without accepting their user agreement
     * Download the [STM32CubeCLT](https://www.st.com/en/development-tools/stm32cubeclt.html)
         * Select the "STM32CubeCLT Debian Linux Installer" package to download
-    * Place the downloaded file in the following WSL Linux folder (this location is shared with the devcontainer):
+    * Place the downloaded file in the following WSL Linux folder (this location is shared with the devcontainer, see devcontainer.json):
         * `\\wsl.localhost\Ubuntu\home\<username>\share`
+        * Note: the `owner:group` should the `<username>` for share. If it is `root`, run `sudo chown -R <username>:<username> ~/share` to change it and its subfiles.
     * Run `west st-clt /mnt/share/<SMT32CubeCLT filename>` in the devcontainer
         * This only needs to be done once for a new devcontainer
 1. Once the CLT is installed:

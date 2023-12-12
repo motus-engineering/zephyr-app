@@ -16,6 +16,24 @@ manifest:
         name-allowlist:
           - cmsis
           - hal_stm32
+          - segger
+          - bsim
+          - tinycrypt
+          - net-tools
+          - hal_nordic
+          - nrf_hw_models
+          - babblesim_base
+          - babblesim_ext_2G4_libPhyComv1
+          - babblesim_ext_2G4_phy_v1
+          - babblesim_ext_2G4_channel_NtNcable
+          - babblesim_ext_2G4_channel_multiatt
+          - babblesim_ext_2G4_modem_magic
+          - babblesim_ext_2G4_modem_BLE_simple
+          - babblesim_ext_2G4_device_burst_interferer
+          - babblesim_ext_2G4_device_WLAN_actmod
+          - babblesim_ext_2G4_device_playback
+          - babblesim_ext_libCryptov1
+
       clone-depth: 1
 
   self:

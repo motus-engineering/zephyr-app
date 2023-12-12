@@ -18,6 +18,7 @@ target_sources(app
 )
 
 add_subdirectory(actor)
+add_subdirectory(ble_hr)
 add_subdirectory(event)
 add_subdirectory(hsm)
 add_subdirectory(supervisor)

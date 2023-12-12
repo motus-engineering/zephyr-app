@@ -1,6 +1,19 @@
 {
     "configurations": [
         {
+            "cwd": "${workspaceFolder}",
+            "executable":"${workspaceFolder}/build/zephyr/zephyr.elf",
+            "name": "Debug with JLink",
+            "request": "launch",
+            "type": "cortex-debug",
+            "device": "nrf52",
+            "interface":"swd",
+            "runToEntryPoint": "main",
+            "showDevDebugOutput": "raw",
+            "servertype": "jlink",
+            "serverpath": "/opt/SEGGER/JLink/JLinkGDBServerCLExe"
+        },
+        {
             "name": "Debug with STLink",
             "cwd": "${workspaceFolder}",
             "executable": "${workspaceFolder}/build/zephyr/zephyr.elf",

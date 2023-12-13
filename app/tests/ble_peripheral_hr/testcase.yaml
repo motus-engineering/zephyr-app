@@ -1,0 +1,5 @@
+tests:
+  # section.subsection
+  app.ble_peripheral_hr:
+    platform_allow: native_posix
+    tags: unit

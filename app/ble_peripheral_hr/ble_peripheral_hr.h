@@ -1,12 +1,12 @@
-/** @file ble_hr.h
+/** @file ble_peripheral_hr.h
  *
  * @brief module description
  *
  * (c) 2023 Motus Design Group.  All rights reserved.
  */
 
-#ifndef BLE_HR_H
-#define BLE_HR_H
+#ifndef BLE_PERIPHERAL_HR_H
+#define BLE_PERIPHERAL_HR_H
 
 #ifdef __cplusplus
 extern "C"
@@ -25,18 +25,20 @@ extern "C"
 
 // SECTION: public function prototypes
 /**
- * @brief  Initialzation of the button.
+ * @brief Called to initialize ble connection.
  *
- * Must be called prior to using the button.
- *
- * @return true
- * @return false
+ * 
  */
 void ble_adv(void);
+/**
+ * @brief Called to advertise hr data.
+ *
+ * 
+ */
 void hrs_notify(void);
 
 #ifdef __cplusplus
 } // extern "C"
 #endif // __cplusplus
 
-#endif // BLE_HR_H
+#endif // BLE_PERIPHERAL_HR_H

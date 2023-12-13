@@ -1,4 +1,4 @@
-#include "ble_hr.h"
+#include "ble_peripheral_hr.h"
 
 #include <zephyr/sys/printk.h>
 #include <zephyr/kernel.h>

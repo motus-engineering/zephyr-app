@@ -29,13 +29,13 @@ extern "C"
  *
  * 
  */
-void ble_adv(void);
+int ble_adv(void);
 /**
  * @brief Called to advertise hr data.
  *
  * 
  */
-void hrs_notify(void);
+int hrs_notify(void);
 
 #ifdef __cplusplus
 } // extern "C"

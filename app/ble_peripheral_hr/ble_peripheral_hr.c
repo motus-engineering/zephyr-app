@@ -1,12 +1,9 @@
+#include "ble_interface.h"
 #include "ble_peripheral_hr.h"
 
 #include <zephyr/sys/printk.h>
 #include <zephyr/kernel.h>
-#include <zephyr/bluetooth/bluetooth.h>
-#include <zephyr/bluetooth/conn.h>
-#include <zephyr/bluetooth/gatt.h>
-#include <zephyr/bluetooth/uuid.h>
-#include <zephyr/bluetooth/services/hrs.h>
+
 
 
 
@@ -22,31 +19,24 @@ static const struct bt_data ad[] = {
 
 static void bt_ready(int err);
 
-static int init_ble(void);
+static void init_ble(void);
 
 
-void ble_adv(void){
+int ble_adv(void){
 
     init_ble();
-    while(!ble_ready){
-
-        printk("BLE stack not ready");
-        k_msleep(100);
-
-    }
-    printk("BLE stack ready");
     int err;
-    err = bt_le_adv_start(BT_LE_ADV_CONN_NAME,ad,ARRAY_SIZE(ad),NULL,0);
+    err = BT_LE_ADV_START(BT_LE_ADV_CONN_NAME,ad,ARRAY_SIZE(ad),NULL,0);
     if(err){
         printk("advertising failed %d",err);
 
     }
-
+    return err;
 }
-void hrs_notify(void)
+int hrs_notify(void)
 {
     
-
+    int err;
 	static uint8_t heartrate = 90U;
 
 	/* Heartrate measurements simulation */
@@ -55,7 +45,8 @@ void hrs_notify(void)
 		heartrate = 90U;
 	}
 
-	bt_hrs_notify(heartrate);
+	err = BT_HRS_NOTIFY(heartrate);
+    return err;
 }
 
 static void bt_ready(int err){
@@ -68,16 +59,18 @@ static void bt_ready(int err){
     printk("bt_ready!");
     ble_ready=true;
 }
-static int init_ble(void){
+static void init_ble(void){
 
     printk("init ble");
     int err;
-    err = bt_enable(bt_ready);
+    err = BT_ENABLE(bt_ready);
+   
+    
     if(err){
 
         printk("bt_enable failed (err %d)",err);
-        return err;
-    }
+        k_msleep(100);
 
-    return 0;
+    }
+    printk("BLE stack ready");
 }

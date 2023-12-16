@@ -6,4 +6,5 @@ target_include_directories(app
 target_sources(app
     PRIVATE
         ble_concurrent_roles.c
+        ble_peripheral_hr.c
 )

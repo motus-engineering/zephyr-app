@@ -69,8 +69,7 @@ static void init_ble(void){
     if(err){
 
         printk("bt_enable failed (err %d)",err);
-        k_msleep(100);
-
+        
     }
     printk("BLE stack ready");
 }

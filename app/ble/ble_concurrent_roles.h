@@ -35,7 +35,7 @@ int ble_init(void);
  *
  * 
  */
-void ble_concurrent_start(void);
+int ble_concurrent_start(void);
 
 #ifdef __cplusplus
 } // extern "C"

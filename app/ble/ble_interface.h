@@ -1,6 +1,6 @@
 /** @file ble_interface.h
 * 
-* @brief Compiler barrier for SPI device interfaces
+* @brief Compiler barrier for BLE device interfaces
 *
 * (c) 2023 Motus Design Group.  All rights reserved.
 */ 
@@ -17,9 +17,12 @@ extern "C"
 #include <stdint.h>
 #include <stdbool.h>
 #include <zephyr/bluetooth/bluetooth.h>
+#include <zephyr/bluetooth/hci.h>
 #include <zephyr/bluetooth/conn.h>
 #include <zephyr/bluetooth/gatt.h>
 #include <zephyr/bluetooth/uuid.h>
+#include <zephyr/sys/byteorder.h>
+#include <zephyr/bluetooth/services/bas.h>
 #include <zephyr/bluetooth/services/hrs.h>
 // SECTION: public data types
 
@@ -38,6 +41,11 @@ int dummy_bt_le_adv_start(const struct bt_le_adv_param *param,
 		    const struct bt_data *ad, size_t ad_len,
 		    const struct bt_data *sd, size_t sd_len);
 /**
+ * @brief Placeholder for unit testing mock. Replaces bt_le_scan_starty() when BLE driver not configured. 
+*/
+
+int dummy_bt_le_scan_start(const struct bt_le_scan_param *param,bt_le_scan_cb_t cb);
+/**
  * @brief Placeholder for unit testing mock. Replaces bt_hrs_notify() when BLE driver not configured. 
 */
 int dummy_bt_hrs_notify(uint16_t heartrate);
@@ -49,9 +57,11 @@ int dummy_bt_hrs_notify(uint16_t heartrate);
 #if CONFIG_BT //Wrappers for BLE functions...
 #define BT_ENABLE(w) bt_enable(w)
 #define BT_LE_ADV_START(w,x,y,z,t) bt_le_adv_start(w,x,y,z,t)   
+#define BT_LE_SCAN_START(w,x) bt_le_scan_start(w,x)   
 #else //Placeholders for mock SPI functions...
 #define BT_ENABLE(w) dummy_bt_enable(w)
 #define BT_LE_ADV_START(w,x,y,z,t) dummy_bt_le_adv_start(w,x,y,z,t)  
+#define BT_LE_SCAN_START(w,x) dummy_bt_le_scan_start(w,x)   
 #endif
 #if CONFIG_BT_HRS
 #define BT_HRS_NOTIFY(x) bt_hrs_notify(x);

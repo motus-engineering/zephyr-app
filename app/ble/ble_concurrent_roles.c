@@ -5,7 +5,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-
+#include "ble_interface.h"
+#include "ble_concurrent_roles.h"
 #include <zephyr/types.h>
 #include <stddef.h>
 #include <errno.h>
@@ -13,14 +14,11 @@
 #include <zephyr/kernel.h>
 #include <zephyr/sys/printk.h>
 
-#include <zephyr/bluetooth/bluetooth.h>
-#include <zephyr/bluetooth/hci.h>
-#include <zephyr/bluetooth/conn.h>
-#include <zephyr/bluetooth/uuid.h>
-#include <zephyr/bluetooth/gatt.h>
-#include <zephyr/sys/byteorder.h>
-#include <zephyr/bluetooth/services/bas.h>
-#include <zephyr/bluetooth/services/hrs.h>
+
+
+
+
+
 
 #define BT_LE_ADV_FAST_CONN                                                                        \
 	BT_LE_ADV_PARAM(BT_LE_ADV_OPT_CONNECTABLE | BT_LE_ADV_OPT_ONE_TIME,                    \
@@ -53,7 +51,7 @@ static void disconnected(struct bt_conn *conn, uint8_t reason);
 
 int ble_init(void){
     int err;
-	err = bt_enable(NULL);
+	err = BT_ENABLE(NULL);
 
 	if (err) {
 		printk("Bluetooth init failed (err %d)\n", err);
@@ -62,13 +60,18 @@ int ble_init(void){
 	printk("Bluetooth initialized\n");
     return 0;
 }
-void ble_concurrent_start(void){
+int ble_concurrent_start(void){
 
     int err;
     start_scan();
 
-	err = bt_le_adv_start(BT_LE_ADV_CONN, ad_peer, ARRAY_SIZE(ad_peer), NULL, 0);
+	err = BT_LE_ADV_START(BT_LE_ADV_CONN, ad_peer, ARRAY_SIZE(ad_peer), NULL, 0);
+	if(err){
 
+		printk("BLE failed to advertise, error:%d",err);
+		return err;
+	}
+	return 0;
 }
 
 static uint8_t notify_func(struct bt_conn *conn, struct bt_gatt_subscribe_params *params,
@@ -211,10 +214,10 @@ static void start_scan(void)
 		.window = BT_GAP_SCAN_FAST_WINDOW,
 	};
 
-	err = bt_le_scan_start(&scan_param, device_found);
+	err = BT_LE_SCAN_START(&scan_param, device_found);
 	if (err) {
 		printk("Scanning failed to start (err %d)\n", err);
-		return;
+		
 	}
 
 	printk("Scanning successfully started\n");

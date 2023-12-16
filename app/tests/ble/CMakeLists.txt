@@ -9,7 +9,9 @@ target_sources(app
     PRIVATE
         main.c
         # Add tests here
+        test_ble_concurrent_roles.c
         test_ble_peripheral_hr.c
+        
 )
 target_compile_options(app PUBLIC --coverage -fprofile-abs-path)
 target_link_options(app PUBLIC --coverage)

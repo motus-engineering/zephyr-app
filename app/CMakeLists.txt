@@ -18,8 +18,7 @@ target_sources(app
 )
 
 add_subdirectory(actor)
-add_subdirectory(ble_peripheral_hr)
-add_subdirectory(ble_concurrent_roles)
+add_subdirectory(ble)
 add_subdirectory(event)
 add_subdirectory(hsm)
 add_subdirectory(supervisor)

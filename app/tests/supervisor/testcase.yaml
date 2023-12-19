@@ -3,3 +3,4 @@ tests:
   app.supervisor:
     platform_allow: native_posix
     tags: unit
+    tests: ./

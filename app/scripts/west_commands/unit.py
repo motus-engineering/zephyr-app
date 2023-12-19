@@ -7,6 +7,9 @@ from textwrap import dedent            # just for nicer code indentation
 from west.commands import WestCommand  # your extension must subclass this
 from west import log                   # use this for user output
 
+from dts2repl import dts2repl # Create repl files for renode from device tree files
+from argparse import Namespace
+
 from os import path
 import subprocess
 
@@ -40,6 +43,12 @@ class Unit(WestCommand):
         # This gets called when the user runs the command, e.g.:
         #
         #   $ west unit
-        subprocess.run(['west', 'twister', '-cnv', '--coverage', '--gcov-tool', 'gcovr', '--coverage-tool', 'gcovr', '--coverage-formats', 'txt', '-T', 'app/tests/', '-O', 'build/twister'], check=True)
+
+        # From the flattened device tree in the build output, create
+        # a .repl file for emulating the board in renode.
+        # with open("boards/my_board.repl", "w") as repl_file:
+        #     repl_file.write(dts2repl.generate(Namespace(filename="./build/zephyr/zephyr.dts")))
+
+        subprocess.run(['west', 'twister', '-cnv', '--coverage', '--gcov-tool', 'gcovr', '--coverage-tool', 'gcovr', '--coverage-formats', 'txt', '--board-root', './app', '--platform', './app_nucleo_l476rg', '-T', 'app/tests/', '-O', 'build/twister'], check=True)
         subprocess.run(['gcovr', '-f', 'app', '-e', 'app/tests', '--txt', 'build/twister/coverage/coverage.txt', '--xml', 'build/twister/coverage/coverage.xml', '.'], check=True)
         subprocess.run(['cat', 'build/twister/coverage/coverage.txt'], check=True)

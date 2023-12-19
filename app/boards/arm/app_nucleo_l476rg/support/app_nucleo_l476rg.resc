@@ -1,0 +1,17 @@
+:description: This script is prepared to run Zephyr on app_nucleo_l476rg
+:name: app_nucleo_l476rg
+
+$name?="app_nucleo_l476rg"
+
+using sysbus
+mach create $name
+
+machine LoadPlatformDescription $ORIGIN/app_nucleo_l476rg.repl
+
+showAnalyzer usart2
+
+macro reset
+"""
+    sysbus LoadELF $ORIGIN/../../../../../build/zephyr/zephyr.elf
+"""
+runMacro $reset

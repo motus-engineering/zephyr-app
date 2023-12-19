@@ -14,3 +14,8 @@ west-commands:
       - name: unit
         class: Unit
         help: runs the app unit tests
+  - file: scripts/west_commands/emulate.py
+    commands:
+      - name: emulate
+        class: Emulate
+        help: runs automated tests on a renode emulator

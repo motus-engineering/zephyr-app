@@ -1,6 +1,19 @@
 {
     "configurations": [
         {
+            "name": "Emulator Debug",
+            "cwd": "${workspaceRoot}",
+            "executable": "${workspaceFolder}/build/zephyr/zephyr.elf",
+            "request": "launch",
+            "type": "cortex-debug",
+            "servertype": "external",
+            "gdbTarget": "localhost:3333",
+            "gdbPath": "/opt/st/stm32cubeclt_1.12.1/GNU-tools-for-STM32/bin/arm-none-eabi-gdb",
+            "preLaunchCommands":[
+                "monitor start"
+            ]
+        },
+        {
             "name": "Debug with STLink",
             "cwd": "${workspaceFolder}",
             "executable": "${workspaceFolder}/build/zephyr/zephyr.elf",

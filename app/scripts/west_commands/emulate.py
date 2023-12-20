@@ -14,7 +14,7 @@ import subprocess
 from fnmatch import fnmatch
 
 from glob import glob
-from pyrenode import connect_renode, get_keywords
+from pyrenode3.wrappers import Analyzer, Emulation, Monitor
 
 class Emulate(WestCommand):
 
@@ -49,6 +49,8 @@ class Emulate(WestCommand):
         # This gets called when the user runs the command, e.g.:        
         #   $ west emulate <action>
 
+
+        #Identify the target of the last build
         board = ''
         board_dir = ''
         with open('./build/CMakeCache.txt', 'r', encoding='utf-8') as f:
@@ -60,37 +62,37 @@ class Emulate(WestCommand):
                 elif name == 'BOARD_DIR:PATH':
                     board_dir = var.strip()
 
-
         if not board or not board_dir:
             log.inf('No valid build')
             return
         else:
             log.inf('Found board=' + board + ' and board_dir=' + board_dir)
-        
-        connect_renode()
-        get_keywords()
 
+        #Set up emulator
+        e = Emulation()
+        m = Monitor()
+        board_mach = e.add_mach(board)
+        board_mach.load_elf('./build/zephyr/zephyr.elf')
+
+        #Look for renode support files for the board...
         support_files = path.join(board_dir, 'support')
-        board_resc = ''
-        board_repl = ''
         if path.exists(support_files):
             if glob(path.join(support_files, '*.resc')):
                 log.inf('Found renode script in ' + str(support_files))
                 board_resc = glob(path.join(support_files, '*.resc'))[0]
+                board_mach.load_resc(board_resc)
             elif glob(path.join(support_files, '*.repl')):
                 log.inf('No renode scripts found in ' + str(support_files) + '. Using platform description')
                 board_repl = glob(path.join(support_files, '*.repl'))[0]
+                board_mach.load_repl(board_repl)
             else:
                 log.inf('Missing renode platform description (*.repl) in ' + str(support_files) + 
                         '. A .repl file can be generated from the flattened device tree for the built platform using \'dts2repl ./build/zephyr/zephyr.dts\'')
                 ExecuteCommand('quit')
                 return
-        
-        connect_renode()
-        get_keywords()
-        if resc:
-            ExecuteCommand('include @' + board_resc)
-        StartEmulation()
+
+        # Analyzer(stm32l072.sysbus.usart2).Show()
+        e.StartAll()
 
         if path.exists(args.action) is False or args.action == 'run':
             log.inf("Running build on Renode machine...")

@@ -7,7 +7,8 @@ from textwrap import dedent            # just for nicer code indentation
 from west.commands import WestCommand  # your extension must subclass this
 from west import log                   # use this for user output
 
-from os import path, chmod, listdir, environ
+# from os import path, chmod, listdir, environ
+import os
 
 import stat
 import subprocess
@@ -15,6 +16,11 @@ from fnmatch import fnmatch
 
 from glob import glob
 from pyrenode3.wrappers import Analyzer, Emulation, Monitor
+
+# from pydevicetree import Devicetree
+from devicetree import edtlib, dtlib
+from dts2repl import dts2repl # Create repl files for renode from device tree files
+from argparse import Namespace
 
 class Emulate(WestCommand):
 
@@ -49,61 +55,32 @@ class Emulate(WestCommand):
         # This gets called when the user runs the command, e.g.:        
         #   $ west emulate <action>
 
-
-        #Identify the target of the last build
-        board = ''
-        board_dir = ''
-        with open('./build/CMakeCache.txt', 'r', encoding='utf-8') as f:
-            for line in f:
-                name, sep, var = line.partition("=")
-                name = name.strip()
-                if name == 'BOARD:STRING':
-                    board = var.strip()
-                elif name == 'BOARD_DIR:PATH':
-                    board_dir = var.strip()
-
-        if not board or not board_dir:
-            log.inf('No valid build')
-            return
-        else:
-            log.inf('Found board=' + board + ' and board_dir=' + board_dir)
-
+        root_dir = '/workspaces/'
+        output_dir = root_dir + 'zephyr-app/build/zephyr/'
+       
         #Set up emulator
+        log.inf('Setting up emulator...')
         e = Emulation()
-        m = Monitor()
-        board_mach = e.add_mach(board)
-        board_mach.load_elf('./build/zephyr/zephyr.elf')
+        board_mach = e.add_mach("my board")
+        board_mach.load_elf(output_dir + 'zephyr.elf')
 
-        #Look for renode support files for the board...
-        support_files = path.join(board_dir, 'support')
-        if path.exists(support_files):
-            if glob(path.join(support_files, '*.resc')):
-                log.inf('Found renode script in ' + str(support_files))
-                board_resc = glob(path.join(support_files, '*.resc'))[0]
-                board_mach.load_resc(board_resc)
-            elif glob(path.join(support_files, '*.repl')):
-                log.inf('No renode scripts found in ' + str(support_files) + '. Using platform description')
-                board_repl = glob(path.join(support_files, '*.repl'))[0]
-                board_mach.load_repl(board_repl)
-            else:
-                log.inf('Missing renode platform description (*.repl) in ' + str(support_files) + 
-                        '. A .repl file can be generated from the flattened device tree for the built platform using \'dts2repl ./build/zephyr/zephyr.dts\'')
-                ExecuteCommand('quit')
-                return
+        #Generate and load .repl file for board from built device tree
+        log.inf('Generating emulator platform description from device tree...')
+        with open(output_dir + 'platform.repl', "w") as repl_file:
+            repl_file.write(dts2repl.generate(Namespace(filename=(output_dir + 'zephyr.dts'))))
+        board_mach.load_repl(output_dir + 'platform.repl')
 
-        # Analyzer(stm32l072.sysbus.usart2).Show()
+        # Get console port from built device tree and show analyzer output
+        log.inf('Getting console peripheral from device tree...')
+        board_dt = dtlib.DT(filename=(output_dir + 'zephyr.dts'))
+        dt_chosen = board_dt.get_node('/chosen')
+        if dt_chosen.props.get('zephyr,console'):
+            console_node = dt_chosen.props.get('zephyr,console').to_path()
+            console_node_name = console_node.name
+            if console_node.labels:
+                console_node_name = console_node.labels[0] #If we're using a label
+            Analyzer(board_mach.sysbus.get_child(console_node_name)).Show()
+        
+        log.inf('Starting emulation...')
         e.StartAll()
-
-        if path.exists(args.action) is False or args.action == 'run':
-            log.inf("Running build on Renode machine...")
-            #Start emulator and load/run .elf file
-        elif args.action == 'test':
-            log.inf("Running robot framework tests on Renode machine...")
-            #Look for robot file
-        elif args.action == 'debug':
-            log.inf("Starting GDB server on Renode machine...")
-            #Setup gdb server
-        else:
-            log.inf("Bad arg")
-
         log.inf('Done')

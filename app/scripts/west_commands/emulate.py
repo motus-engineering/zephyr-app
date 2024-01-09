@@ -54,12 +54,14 @@ class Emulate(WestCommand):
         #Set up emulator
         e = Emulation()
         board_mach = e.add_mach("my board")
-        board_mach.load_elf(output_dir + 'zephyr.elf')
-
+        
         #Generate and load .repl file for board from built device tree
         with open(output_dir + 'platform.repl', "w") as repl_file:
             repl_file.write(dts2repl.generate(Namespace(filename=(output_dir + 'zephyr.dts'))))
         board_mach.load_repl(output_dir + 'platform.repl')
+
+        #Load executable
+        board_mach.load_elf(output_dir + 'zephyr.elf')
 
         # Get console port from built device tree and show analyzer output
         board_dt = dtlib.DT(filename=(output_dir + 'zephyr.dts'))

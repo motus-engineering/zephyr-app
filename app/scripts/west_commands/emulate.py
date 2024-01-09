@@ -14,13 +14,12 @@ import stat
 import subprocess
 from fnmatch import fnmatch
 
-from glob import glob
 from pyrenode3.wrappers import Analyzer, Emulation, Monitor
-
-# from pydevicetree import Devicetree
-from devicetree import edtlib, dtlib
+from devicetree import dtlib
 from dts2repl import dts2repl # Create repl files for renode from device tree files
 from argparse import Namespace
+
+import time
 
 class Emulate(WestCommand):
 
@@ -43,12 +42,6 @@ class Emulate(WestCommand):
                                          help=self.help,
                                          description=self.description)
 
-        # # Add options using the standard argparse module API.
-        parser.add_argument('action', help=(
-            'test - setup and run robot framework tests, ' +
-            'debug - load binaries and setup a gdb server, or ' + 
-            'run - load binaries and run'))
-
         return parser # gets stored as self.parser
 
     def do_run(self, args, unknown_args):
@@ -59,19 +52,16 @@ class Emulate(WestCommand):
         output_dir = root_dir + 'zephyr-app/build/zephyr/'
        
         #Set up emulator
-        log.inf('Setting up emulator...')
         e = Emulation()
         board_mach = e.add_mach("my board")
         board_mach.load_elf(output_dir + 'zephyr.elf')
 
         #Generate and load .repl file for board from built device tree
-        log.inf('Generating emulator platform description from device tree...')
         with open(output_dir + 'platform.repl', "w") as repl_file:
             repl_file.write(dts2repl.generate(Namespace(filename=(output_dir + 'zephyr.dts'))))
         board_mach.load_repl(output_dir + 'platform.repl')
 
         # Get console port from built device tree and show analyzer output
-        log.inf('Getting console peripheral from device tree...')
         board_dt = dtlib.DT(filename=(output_dir + 'zephyr.dts'))
         dt_chosen = board_dt.get_node('/chosen')
         if dt_chosen.props.get('zephyr,console'):
@@ -81,6 +71,8 @@ class Emulate(WestCommand):
                 console_node_name = console_node.labels[0] #If we're using a label
             Analyzer(board_mach.sysbus.get_child(console_node_name)).Show()
         
-        log.inf('Starting emulation...')
+        #Start emulation and let it run indefinitely
         e.StartAll()
-        log.inf('Done')
+        while 1:
+            time.sleep(1)
+

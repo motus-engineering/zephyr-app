@@ -18,4 +18,4 @@ west-commands:
     commands:
       - name: emulate
         class: Emulate
-        help: runs automated tests on a renode emulator
+        help: runs built application on a renode emulator

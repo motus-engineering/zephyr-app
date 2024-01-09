@@ -42,6 +42,8 @@ class Emulate(WestCommand):
                                          help=self.help,
                                          description=self.description)
 
+        parser.add_argument('-i', '--instances', help='Number board instances to emulate')
+
         return parser # gets stored as self.parser
 
     def do_run(self, args, unknown_args):
@@ -50,20 +52,15 @@ class Emulate(WestCommand):
 
         root_dir = '/workspaces/'
         output_dir = root_dir + 'zephyr-app/build/zephyr/'
-       
-        #Set up emulator
-        e = Emulation()
-        board_mach = e.add_mach("my board")
-        
-        #Generate and load .repl file for board from built device tree
+
+        log.inf('Preparing platform')
+
+        # Generate platform description file (.repl) from flattened device tree
         with open(output_dir + 'platform.repl', "w") as repl_file:
             repl_file.write(dts2repl.generate(Namespace(filename=(output_dir + 'zephyr.dts'))))
-        board_mach.load_repl(output_dir + 'platform.repl')
 
-        #Load executable
-        board_mach.load_elf(output_dir + 'zephyr.elf')
-
-        # Get console port from built device tree and show analyzer output
+        # Get assigned console port from flattened device tree
+        console_node_name = ''
         board_dt = dtlib.DT(filename=(output_dir + 'zephyr.dts'))
         dt_chosen = board_dt.get_node('/chosen')
         if dt_chosen.props.get('zephyr,console'):
@@ -72,17 +69,39 @@ class Emulate(WestCommand):
             if console_node.labels:
                 console_node_name = console_node.labels[0] #If we're using a label
 
-            Analyzer(board_mach.sysbus.get_child(console_node_name)).Show()
-                
-            # e.CreateUartPtyTerminal("console_term", "/tmp/" + console_node_name)
-            # e.Connector.Connect(board_mach.sysbus.get_child(console_node_name).internal, e.externals.console_term)
-                
-            # e.CreateServerSocketTerminal(3456, "console_server")
-            # e.Connector.Connect(board_mach.sysbus.get_child(console_node_name).internal, e.externals.console_server)
+        # Set up emulator
+        e = Emulation()
 
+        machine_count = 1
+        if args.instances:
+            machine_count = int(args.instances)
         
-        #Start emulation and let it run indefinitely
+        log.inf('Generating ' + str(machine_count) + ' instances')
+        for x in range(machine_count):
+            # Create a board instance
+            board_mach = e.add_mach('B' + str(x))
+            
+            # Load platform description
+            board_mach.load_repl(output_dir + 'platform.repl')
+
+            # Load executable
+            board_mach.load_elf(output_dir + 'zephyr.elf')
+
+            # Show analyzer output from the emulated board
+            if console_node_name:
+                Analyzer(board_mach.sysbus.get_child(console_node_name)).Show()
+                    
+                # e.CreateUartPtyTerminal("console_term", "/tmp/" + console_node_name)
+                # e.Connector.Connect(board_mach.sysbus.get_child(console_node_name).internal, e.externals.console_term)
+                    
+                # e.CreateServerSocketTerminal(3456, "console_server")
+                # e.Connector.Connect(board_mach.sysbus.get_child(console_node_name).internal, e.externals.console_server)
+        
+        log.inf('Starting emulation')
+
+        # Start all boards and let them run indefinitely
         e.StartAll()
+        
         while 1:
             time.sleep(1)
 

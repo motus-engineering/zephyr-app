@@ -69,7 +69,15 @@ class Emulate(WestCommand):
             console_node_name = console_node.name
             if console_node.labels:
                 console_node_name = console_node.labels[0] #If we're using a label
+
             Analyzer(board_mach.sysbus.get_child(console_node_name)).Show()
+                
+            # e.CreateUartPtyTerminal("console_term", "/tmp/" + console_node_name)
+            # e.Connector.Connect(board_mach.sysbus.get_child(console_node_name).internal, e.externals.console_term)
+                
+            # e.CreateServerSocketTerminal(3456, "console_server")
+            # e.Connector.Connect(board_mach.sysbus.get_child(console_node_name).internal, e.externals.console_server)
+
         
         #Start emulation and let it run indefinitely
         e.StartAll()

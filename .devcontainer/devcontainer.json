@@ -20,7 +20,9 @@
 	],
 
 	// Environment variables used by the build system
-	// "containerEnv": {},
+	"containerEnv": {
+		"PYRENODE_ARCH_PKG": "/workspaces/zephyr-app/renode-latest.pkg.tar.xz"
+	},
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
@@ -30,7 +32,8 @@
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": {
-		"west_init": "if ! [ -d .west ]; then west init -l app; fi" // run west init if not done already
+		"west_init": "if ! [ -d .west ]; then west init -l app; fi", // run west init if not done already
+		"get_renode": "wget https://builds.renode.io/renode-latest.pkg.tar.xz -P /workspaces/zephyr-app"
 	},
 
 	// Configure tool-specific properties.

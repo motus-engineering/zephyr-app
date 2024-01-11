@@ -1,17 +1,20 @@
 {
     "configurations": [
         {
-            "name": "Emulator Debug",
-            "cwd": "${workspaceRoot}",
+            "name": "Attach to gdbserver",
+            "showDevDebugOutput": "raw",
             "executable": "${workspaceFolder}/build/zephyr/zephyr.elf",
-            "request": "launch",
+            "cwd": "${workspaceFolder}", 
             "type": "cortex-debug",
+            "request": "attach",
             "servertype": "external",
             "gdbTarget": "localhost:3333",
-            "gdbPath": "/opt/st/stm32cubeclt_1.12.1/GNU-tools-for-STM32/bin/arm-none-eabi-gdb",
-            "preLaunchCommands":[
-                "monitor start"
-            ]
+            "gdbPath": "/usr/bin/gdb-multiarch",
+            "postAttachCommands": [
+                "-break-insert -t --function main",
+                "monitor start",
+                "continue"
+            ],
         },
         {
             "name": "Debug with STLink",

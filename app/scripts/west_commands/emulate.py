@@ -78,11 +78,14 @@ class Emulate(WestCommand):
         
         log.inf('Generating ' + str(machine_count) + ' instances')
         for x in range(machine_count):
+            board_mach_name = 'B' + str(x)
             # Create a board instance
-            board_mach = e.add_mach('B' + str(x))
+            board_mach = e.add_mach(board_mach_name)
             
             # Load platform description
             board_mach.load_repl(output_dir + 'platform.repl')
+
+            board_mach.StartGdbServer(3333)
 
             # Load executable
             board_mach.load_elf(output_dir + 'zephyr.elf')
@@ -97,11 +100,21 @@ class Emulate(WestCommand):
                 # e.CreateServerSocketTerminal(3456, "console_server")
                 # e.Connector.Connect(board_mach.sysbus.get_child(console_node_name).internal, e.externals.console_server)
         
-        log.inf('Starting emulation')
+            board_mach.EnableProfiler(output_dir + "/" + board_mach_name + '_Profiler.log')
 
-        # Start all boards and let them run indefinitely
-        e.StartAll()
-        
-        while 1:
-            time.sleep(1)
+        # log.inf('Starting emulation')
+
+        # # Start all boards and let them run indefinitely
+        # e.StartAll()
+       
+        i = 15
+        while i > 0:
+            # i = i - 1
+            time.sleep(10)
+            print('running')
+
+        #Explicit shutdown to make sure all active logs are terminated properly
+        e.Dispose()
+
+        log.inf('Done')
 

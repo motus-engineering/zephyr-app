@@ -21,7 +21,8 @@
 
 	// Environment variables used by the build system
 	"containerEnv": {
-		"PYRENODE_ARCH_PKG": "/workspaces/zephyr-app/renode-latest.pkg.tar.xz"
+		"DEV_TOOLS_ROOT": "/workspaces/zephyr-app/tools/",
+		"PYRENODE_ARCH_PKG": "/workspaces/zephyr-app/tools/renode/renode-latest.pkg.tar.xz"
 	},
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
@@ -33,8 +34,7 @@
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": {
 		"west_init": "if ! [ -d .west ]; then west init -l app; fi", // run west init if not done already
-		"get_renode": "wget https://builds.renode.io/renode-latest.pkg.tar.xz -P /workspaces/zephyr-app",
-		"get_gdb_multiarch": "sudo apt-get update -y && sudo apt-get install -y gdb-multiarch"
+		"tools_init": "bash /workspaces/zephyr-app/.devcontainer/install_dev_tools.sh"
 	},
 
 	// Configure tool-specific properties.
@@ -59,7 +59,9 @@
 				"marus25.cortex-debug",
 				"github.vscode-github-actions",
 				"GitHub.vscode-pull-request-github",
-				"cschlosser.doxdocgen"]
+				"cschlosser.doxdocgen",
+				"seanwu.vscode-qt-for-python" //For renode log visualization
+			]
 		}
 	}
 

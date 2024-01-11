@@ -1,7 +1,7 @@
 {
     "configurations": [
         {
-            "name": "Attach to gdbserver",
+            "name": "Renode Debug",
             "showDevDebugOutput": "raw",
             "executable": "${workspaceFolder}/build/zephyr/zephyr.elf",
             "cwd": "${workspaceFolder}", 

@@ -42,6 +42,7 @@ class Emulate(WestCommand):
                                          help=self.help,
                                          description=self.description)
 
+        parser.add_argument('-e', '--execution', help='<debug> start a debug server or <run> to run application (default)')
         parser.add_argument('-i', '--instances', help='Number board instances to emulate')
 
         return parser # gets stored as self.parser
@@ -72,8 +73,9 @@ class Emulate(WestCommand):
         # Set up emulator
         e = Emulation()
 
+        # If we're setting up a debug server, only emulate one device.
         machine_count = 1
-        if args.instances:
+        if args.instances and not args.execution == 'debug':
             machine_count = int(args.instances)
         
         log.inf('Generating ' + str(machine_count) + ' instances')
@@ -85,7 +87,9 @@ class Emulate(WestCommand):
             # Load platform description
             board_mach.load_repl(output_dir + 'platform.repl')
 
-            board_mach.StartGdbServer(3333)
+            # If we're debugging, start GDB server. Clients can connect with gdb-multiarch.
+            if args.execution == 'debug':
+                board_mach.StartGdbServer(3333)
 
             # Load executable
             board_mach.load_elf(output_dir + 'zephyr.elf')
@@ -100,20 +104,26 @@ class Emulate(WestCommand):
                 # e.CreateServerSocketTerminal(3456, "console_server")
                 # e.Connector.Connect(board_mach.sysbus.get_child(console_node_name).internal, e.externals.console_server)
         
-            board_mach.EnableProfiler(output_dir + "/" + board_mach_name + '_Profiler.log')
+            board_mach.EnableProfiler(output_dir + '/' + board_mach_name + '_Profiler.log')
 
-        # log.inf('Starting emulation')
+        log.inf('Starting emulation') 
 
-        # # Start all boards and let them run indefinitely
-        # e.StartAll()
-       
-        i = 15
-        while i > 0:
-            # i = i - 1
-            time.sleep(10)
-            print('running')
+        # Don't start execution if we're debugging. The debugger client can control this
+        if args.execution == 'debug':
+            log.inf('Use the \'Renode Debug\' launch target to start debugging on the emulated machine') 
+        else: 
+            # Start all boards and let them run indefinitely
+            e.StartAll()
 
-        #Explicit shutdown to make sure all active logs are terminated properly
+        log.inf('Running emulator. Find run logs for each emulated machine in ' + output_dir +
+                '. Logs cannot be parsed unless emulation is cleanly terminated' + 
+                '(i.e. don\'t interrupt this session with Ctrl+C. Press ENTER to stop.)')
+
+        # Stop emulation on keyboard input 
+        input()
+        log.inf('Stopping emulation')
+
+        # Explicit shutdown to make sure all active logs are terminated properly
         e.Dispose()
 
         log.inf('Done')

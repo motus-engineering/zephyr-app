@@ -34,7 +34,7 @@
 	"postCreateCommand": {
 		"west_init": "if ! [ -d .west ]; then west init -l app; fi", // run west init if not done already
 		"get_renode": "wget https://builds.renode.io/renode-latest.pkg.tar.xz -P /workspaces/zephyr-app",
-		"get_gdb_multiarch": "sudo apt-get install -y gdb-multiarch"
+		"get_gdb_multiarch": "sudo apt-get update -y && sudo apt-get install -y gdb-multiarch"
 	},
 
 	// Configure tool-specific properties.

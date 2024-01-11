@@ -116,7 +116,7 @@ class Emulate(WestCommand):
             e.StartAll()
 
         log.inf('Running emulator. Find run logs for each emulated machine in ' + output_dir +
-                '. Logs cannot be parsed unless emulation is cleanly terminated' + 
+                '. Logs cannot be parsed unless emulation is cleanly terminated ' + 
                 '(i.e. don\'t interrupt this session with Ctrl+C. Press ENTER to stop.)')
 
         # Stop emulation on keyboard input 

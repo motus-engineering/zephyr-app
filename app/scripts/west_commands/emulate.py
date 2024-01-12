@@ -7,19 +7,10 @@ from textwrap import dedent            # just for nicer code indentation
 from west.commands import WestCommand  # your extension must subclass this
 from west import log                   # use this for user output
 
-# from os import path, chmod, listdir, environ
-import os
-
-import stat
-import subprocess
-from fnmatch import fnmatch
-
-from pyrenode3.wrappers import Analyzer, Emulation, Monitor
+from pyrenode3.wrappers import Analyzer, Emulation
 from devicetree import dtlib
 from dts2repl import dts2repl # Create repl files for renode from device tree files
 from argparse import Namespace
-
-import time
 
 class Emulate(WestCommand):
 

@@ -12,8 +12,8 @@
             "gdbPath": "/usr/bin/gdb-multiarch",
             "postAttachCommands": [
                 "-break-insert -t --function main",
-                "monitor start",
-                "continue"
+                "monitor reset",
+                "monitor start"                
             ],
         },
         {

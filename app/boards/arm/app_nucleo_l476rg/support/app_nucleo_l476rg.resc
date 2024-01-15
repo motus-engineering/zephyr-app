@@ -7,11 +7,11 @@ using sysbus
 mach create $name
 
 machine LoadPlatformDescription $ORIGIN/app_nucleo_l476rg.repl
-
 showAnalyzer usart2
 
-macro reset
-"""
-    sysbus LoadELF $ORIGIN/../../../../../build/zephyr/zephyr.elf
-"""
-runMacro $reset
+sysbus LoadELF $CWD/zephyr/zephyr.elf
+
+logFile $CWD/debug.log
+
+machine StartGdbServer 3333
+

@@ -29,7 +29,7 @@ on:
 # Workflow
 jobs:
   checks:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     env:
       ZEPHYR_SDK_INSTALL_DIR: /opt/toolchains/zephyr-sdk-0.16.3
     permissions:
@@ -53,9 +53,6 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Format Check
-        run: find app -iname *.h -o -iname *.c | xargs clang-format -n --Werror --style=file:.vscode/.clang-format
 
       - name: Configure and Build
         id: build

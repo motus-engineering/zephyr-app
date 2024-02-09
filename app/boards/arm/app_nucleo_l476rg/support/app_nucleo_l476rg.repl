@@ -90,3 +90,4 @@ dwt: Miscellaneous.DWT @ sysbus 0xE0001000
 sysbus:
     init:
         Tag <0x40007000 4> "PWR_CR1" 0xF00
+

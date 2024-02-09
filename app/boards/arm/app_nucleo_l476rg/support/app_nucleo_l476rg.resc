@@ -9,9 +9,10 @@ mach create $name
 machine LoadPlatformDescription $ORIGIN/app_nucleo_l476rg.repl
 showAnalyzer usart2
 
-sysbus LoadELF $CWD/zephyr/zephyr.elf
+sysbus LoadELF @/workspaces/zephyr-app/build/zephyr/zephyr.elf
 
-logFile $CWD/debug.log
+machine EnableProfiler @/workspaces/zephyr-app/build/zephyr/renode_profiler.log
+
+logFile @/workspaces/zephyr-app/build/debug.log
 
 machine StartGdbServer 3333
-

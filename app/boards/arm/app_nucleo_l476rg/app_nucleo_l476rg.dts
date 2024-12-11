@@ -47,6 +47,8 @@
 	};
 };
 
+
+
 &clk_lsi {
 	status = "okay";
 };
@@ -125,6 +127,15 @@
 	pinctrl-names = "default";
 	cs-gpios = <&gpiob 6 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
 	status = "okay";
+
+	zephyr_uhc0: max3421e@0 {
+		compatible = "maxim,max3421e_spi";
+		spi-max-frequency = <26000000>;
+		int-gpios = <&gpioc 7 GPIO_ACTIVE_LOW>;	/* D9 */
+		reset-gpios = <&gpioa 8 GPIO_ACTIVE_LOW>;	/* D7 */
+		status = "okay";
+		reg = <0>;
+	};
 };
 
 &spi2 {
@@ -132,6 +143,20 @@
 		     &spi2_miso_pb14 &spi2_mosi_pb15>;
 	pinctrl-names = "default";
 	status = "okay";
+};
+
+&arduino_spi {
+	status = "okay";
+	cs-gpios = <&arduino_header 16 GPIO_ACTIVE_LOW>;	/* D10 */
+
+	zephyr_uhc0: max3421e@0 {
+		compatible = "maxim,max3421e_spi";
+		spi-max-frequency = <26000000>;
+		int-gpios = <&arduino_header 15 GPIO_ACTIVE_LOW>;	/* D9 */
+		reset-gpios = <&arduino_header 13 GPIO_ACTIVE_LOW>;	/* D7 */
+		status = "okay";
+		reg = <0>;
+	};
 };
 
 &spi3 {

@@ -20,6 +20,10 @@ supported:
   - counter
   - adc
   - sht3xd
+  - spi
+  - usb
+  - uhc
+  - max3421e
 ram: 96
 flash: 1024
 vendor: st

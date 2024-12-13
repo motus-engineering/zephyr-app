@@ -19,7 +19,7 @@
         {
             "name": "Debug with STLink",
             "cwd": "${workspaceFolder}",
-            "executable": "${workspaceFolder}/build/zephyr/zephyr.elf",
+            "executable": "${workspaceFolder}/app/build/zephyr/zephyr.elf",
             "request": "launch",
             "type": "cortex-debug",
             "runToEntryPoint": "main",

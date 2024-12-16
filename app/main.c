@@ -29,18 +29,23 @@ static int usb_host_enable(void)
     {
         err = usbh_init(&uhs_ctx);
         __ASSERT(err == 0, "Failed to initialize USB host");
+        if (err) break;
 
         err = usbh_enable(&uhs_ctx);
         __ASSERT(err == 0, "Failed to enable USB host");
+        if (err) break;
 
         err = uhc_bus_reset(uhs_ctx.dev);
         __ASSERT(err == 0, "Failed to signal bus reset");
+        if (err) break;
 
         err = uhc_bus_resume(uhs_ctx.dev);
         __ASSERT(err == 0, "Failed to signal bus resume");
+        if (err) break;
 
         err = uhc_sof_enable(uhs_ctx.dev);
         __ASSERT(err == 0, "Failed to enable SoF generator");
+        if (err) break;
     } while (0);
 
     // if (!err)
